@@ -25,7 +25,6 @@ Structured code is essential for several reasons:
 - **Scalability**: As applications grow, structured code helps manage complexity and allows for easier scaling. It enables teams to work on different parts of the application without stepping on each other's toes
 - **Testability**: Structured code is easier to test. It allows for better isolation of components, making unit testing and integration testing more straightforward.
 - **Consistency**: A consistent code structure helps developers follow best practices and reduces the likelihood of bugs. It also makes it easier to enforce coding standards across the team.
-  cc
 
 ### How does NestJS make this possible?
 
@@ -107,4 +106,170 @@ end
 A --> C
 B --> C
 C --> D
+```
+
+## What is a REST API?
+
+A REST API (Representational State Transfer Application Programming Interface) is a set of rules and conventions for building web services that allow different systems to communicate over HTTP. It is based on the principles of REST, which emphasizes stateless communication, resource-based interactions, and a uniform interface.
+
+**Official Definition**: The REST API or RESTful API is an Application Programming Interface (API) that conforms to the design principles of Representational State Transfer (REST) architectural style of programming. It allows developers to access and manipulate resources using standard HTTP methods such as GET, POST, PUT, DELETE, and PATCH.
+
+### REST Design Principles
+
+REST APIs are designed around the following principles:
+
+- **Statelessness**: Each request from a client to a server must contain all the information needed to understand and process the request. The server does not store any client context between requests.
+- **Client-Server Decoupling**: The client and server are separate entities that can evolve independently. The client does not need to know the implementation details of the server, and vice versa.
+- **Cacheability**: Responses from the server can be cached to improve performance and reduce the load on the server. This allows clients to reuse previously fetched data without making additional requests.
+- **Layered System**: A REST API can be composed of multiple layers, such as load balancers, proxies, and gateways. Each layer can add functionality without affecting the overall architecture.
+- **Uniform Interface**: REST APIs use a consistent and standardized way to interact with resources. This includes using standard HTTP methods (GET, POST, PUT, DELETE) and resource URIs (Uniform Resource Identifiers) to identify resources.
+- **Code on Demand (optional)**: Servers can provide executable code to clients, allowing them to extend functionality without requiring a full application update. This is an optional principle and not commonly used in practice.
+
+#### Client-Server Decoupling
+
+Client-server decoupling is a key principle of REST APIs that allows the client and server to evolve independently. This means that changes made to the client do not require changes to the server, and vice versa. This decoupling is achieved through the use of standard protocols (like HTTP) and data formats (like JSON or XML).
+
+In REST API design, the client and server applications must be completely independent of each other. The client should not need to know how the server is implemented, and the server should not need to know how the client is implemented. This allows for flexibility in development and deployment.
+
+A client sends a request to the server, and the server responds with the requested data or performs the requested action. The interaction uses standard HTTP methods and status codes to communicate the outcome of the request.
+The client can send HTTP methods such as GET, POST, PUT, DELETE, and PATCH to interact with the server's resources.
+
+##### HTTP Request Methods
+
+| Method  | Description                                                                     |
+| ------- | ------------------------------------------------------------------------------- |
+| GET     | Retrieve data from the server (read operation)                                  |
+| POST    | Send data to the server to create a new resource (create operation)             |
+| PUT     | Update an existing resource on the server (update operation)                    |
+| DELETE  | Remove a resource from the server (delete operation)                            |
+| PATCH   | Partially update an existing resource on the server (partial update operation)  |
+| OPTIONS | Retrieve the supported HTTP methods for a resource (used for CORS preflight)    |
+| HEAD    | Retrieve metadata about a resource without the response body (used for caching) |
+| TRACE   | Echo back the received request (used for diagnostic purposes)                   |
+
+#### Uniform Interface
+
+The uniform interface is a fundamental principle of REST APIs that defines how clients and servers interact with resources. It provides a consistent and standardized way to access and manipulate resources, making it easier for developers to understand and use the API.
+
+All API requests for the same resource should look the same or respond back the same, regardless of the client or server implementation. This means that the same HTTP methods, URIs, and data formats should be used consistently across the API.
+
+```mermaid
+graph LR
+subgraph Clients
+A[Client 1]
+B[Client 2]
+end
+
+C[Server]
+
+subgraph API Endpoints
+  GET[GET /posts]
+  POST[POST /posts]
+  DELETE[DELETE /posts]
+end
+
+A --> GET
+A --> POST
+A --> DELETE
+B --> GET
+B --> POST
+B --> DELETE
+GET --> C
+POST --> C
+DELETE --> C
+```
+
+#### Statelessness
+
+Statelessness is a key principle of REST APIs that requires each request from a client to the server to contain all the information needed to understand and process the request. The server does not store any client context between requests, meaning that each request is independent and self-contained.
+
+REST APIs are stateless, meaning that the server does not store any client context between requests. Each request must contain all the information needed to process it, including authentication and authorization details.
+
+```mermaid
+flowchart LR
+  A[Client] -- "POST /echo/post/json<br/>Authorization: Bearer {token}<br/>Host: example.com<br/>Accept: application/json<br/>Content-Type: application/json" --> B[Server]
+```
+
+#### Cacheability
+
+Cacheability is a principle of REST APIs that allows responses from the server to be cached by clients or intermediaries. This improves performance and reduces the load on the server by allowing clients to reuse previously fetched data without making additional requests.
+
+When possible, resources should be cacheable both on the client side and server side. This can be achieved by using HTTP headers like `Cache-Control`, `ETag`, and `Last-Modified` to control how responses are cached and when they should be revalidated.
+
+```mermaid
+flowchart LR
+  Client[Client Browser]
+  ClientCache[Client Cache]
+  ProxyCache[Proxy/Edge Cache]
+  Server[Server]
+
+  Client -- "Request" --> ClientCache
+  ClientCache -- "Request" --> ProxyCache
+  ProxyCache -- "Request" --> Server
+  Server -- "Response" --> ProxyCache
+  ProxyCache -- "Response" --> ClientCache
+  ClientCache -- "Response" --> Client
+```
+
+#### Layered System Architecture
+
+A layered system architecture is a design principle of REST APIs that allows for the separation of concerns by organizing the application into layers. Each layer has its own responsibilities and can interact with other layers through well-defined interfaces.
+
+This architecture allows for scalability, maintainability, and flexibility in the design of the API. It also enables the use of intermediaries, such as load balancers and caches, to improve performance and reliability.
+
+REST APIs need to be designed so that neither the client nor the server can tell whether they are communicating directly or through an intermediary. This means that the API should be designed to work seamlessly with load balancers, proxies, and other intermediaries without affecting the functionality or performance of the API.
+
+```mermaid
+flowchart LR
+  Client[Client]
+  Proxy[Proxy/Load Balancer]
+  Server[Server]
+
+  Client -- "Request" --> Proxy
+  Proxy -- "Request" --> Server
+  Server -- "Response" --> Proxy
+  Proxy -- "Response" --> Client
+```
+
+### Anatomy of a REST API Endpoint
+
+A REST API endpoint is a specific URL that represents a resource or a collection of resources. It is the point of interaction between the client and the server, where the client can perform operations on the resource using standard HTTP methods.
+
+An endpoint consists of the following components:
+
+- **HTTP Method**: The action to be performed on the resource (e.g., GET, POST, PUT, DELETE).
+- **URL/Domain**: The address of the resource, which includes the protocol (http or https), domain name, and path to the resource.
+- **Route**: The specific path that identifies the resource within the API.
+- **Parameters/Path Parameters**: Optional query parameters that can be included in the URL to filter or modify the request.
+- **Query String**: A string of key-value pairs appended to the URL, used to pass additional information to the server.
+- **Request Body**: The data sent in the request, typically used with POST and PUT methods to create or update resources.
+
+```plaintext
+GET https://api.example.com/users?sort=asc&limit=10
+```
+
+#### Params vs Query
+
+In REST APIs, parameters can be passed in two main ways: as path parameters and as query parameters.
+
+- **Path Parameters**: These are part of the URL path and are used to identify a specific resource. They are typically used to specify the resource ID or other unique identifiers.
+
+  Example: `GET /users/{userId}` where `{userId}` is a path parameter.
+
+- **Query Parameters**: These are appended to the URL and are used to filter or modify the request. They are typically used for pagination, sorting, and searching.
+
+  Example: `GET /users?sort=asc&limit=10` where `sort` and `limit` are query parameters.
+
+#### Body Object Example
+
+The request body is used to send data to the server, typically in POST or PUT requests. It contains the data that the client wants to create or update on the server.
+
+Example of a JSON body object for creating a new user:
+
+```json
+{
+  "username": "john_doe",
+  "email": "john_doe@example.com",
+  "password": "password"
+}
 ```
