@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  Ip,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -15,8 +24,16 @@ export class UsersController {
   }
 
   @Post()
-  createUsers(@Body() body: any): Record<string, string> {
-    console.log(body);
+  createUsers(
+    @Body('email') email: string,
+    // Get headers from request
+    @Headers() headers: any,
+    // Get IP address of the request
+    @Ip() ip: any,
+  ): Record<string, string> {
+    console.log(email);
+    console.log(headers);
+    console.log(ip);
     return {};
   }
 }
