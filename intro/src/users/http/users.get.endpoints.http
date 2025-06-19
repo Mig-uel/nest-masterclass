@@ -1,0 +1,4 @@
+# GET /users
+# Description: Retrieve a list of users
+# Response: 200 OK with a list of users
+GET http://localhost:3000/users

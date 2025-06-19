@@ -1,0 +1,12 @@
+# POST /users
+# Description: Create a new user
+# Request Body: JSON object with user details
+# Response: 201 Created with the created user object
+POST http://localhost:3000/users
+Content-Type: application/json
+
+# Request Body
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com"
+}
