@@ -273,3 +273,28 @@ Example of a JSON body object for creating a new user:
   "password": "password"
 }
 ```
+
+## Controllers
+
+Controllers in NestJS are responsible for handling incoming requests and returning responses. They define the routes and endpoints of your application, mapping HTTP requests to specific methods that process the request and return the appropriate response.
+
+Controllers are the routing mechanism in NestJS, allowing you to define how your application responds to different HTTP requests. They are typically decorated with the `@Controller()` decorator, which specifies the base route for the controller.
+
+A controller receives an incoming request, processes it and decides which method should it trigger in order to process the request.
+
+One controller file can process multiple routes, and each route can have its own method to handle the request. This allows you to group related routes together in a single controller.
+
+```typescript
+import { Controller } from '@nestjs/common'
+
+@Controller('users')
+export class UsersController {
+  // Define your routes and methods here
+}
+```
+
+We can also generate a controller using the NestJS CLI:
+
+```bash
+nest generate controller users
+```
