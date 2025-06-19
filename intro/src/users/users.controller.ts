@@ -1,14 +1,22 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
-  @Get()
-  getUsers(): string {
-    return 'You sent a get request to users endpoint';
+  @Get('{/:id}')
+  getUsers(
+    @Param('id') id?: string,
+    @Query('limit') limit?: string,
+  ): Record<string, string> {
+    return {
+      message: id ? 'Params passed' : 'No params passed',
+      params: id || 'N/A',
+      limit: limit || 'N/A',
+    };
   }
 
   @Post()
-  createUsers(): string {
-    return 'You sent a post request to users endpoint';
+  createUsers(@Body() body: any): Record<string, string> {
+    console.log(body);
+    return {};
   }
 }

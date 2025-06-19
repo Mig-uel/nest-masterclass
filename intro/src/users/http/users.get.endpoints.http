@@ -2,3 +2,15 @@
 # Description: Retrieve a list of users
 # Response: 200 OK with a list of users
 GET http://localhost:3000/users
+
+# GET /users{/:id}
+# Description: Retrieve a user by ID
+# Response: 200 OK with user details
+GET http://localhost:3000/users/222
+
+# GET /users{/:id}?limit=10&offset=0
+# Description: Retrieve a paginated list of users by ID
+# Response: 200 OK with a paginated list of users
+GET http://localhost:3000/users/222
+?limit=10
+&offset=0
