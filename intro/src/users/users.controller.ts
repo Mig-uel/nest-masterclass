@@ -35,16 +35,15 @@ export class UsersController {
   @Get('{/:id}')
   getUsers(
     @Param() getUserParamDto: GetUsersParamDto,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit?: number,
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ): Record<string, any> {
     const { id } = getUserParamDto;
 
+    if (!id) return this.usersService.findAll({ id }, limit, page);
+
     return {
-      message: id ? 'Params passed' : 'No params passed',
-      params: id || 'N/A',
-      limit: limit || 'N/A',
-      page: page || 'N/A',
+      id,
     };
   }
 
