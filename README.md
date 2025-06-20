@@ -435,3 +435,61 @@ export class CreateUserDto {
   email?: string
 }
 ```
+
+## Intro to Inversion of Control (IoC)
+
+Inversion of Control (IoC) is a design principle that allows for the decoupling of components in an application. It enables developers to create flexible and maintainable code by allowing the framework to manage the flow of control and dependencies between components.
+
+In NestJS, IoC is implemented through the use of dependency injection (DI). This means that instead of a component creating its own dependencies, the framework injects them into the component when it is instantiated. This allows for better separation of concerns, easier testing, and improved maintainability.
+
+### What is a dependency?
+
+A dependency is a component or module that a class or function relies on to perform its tasks. In the context of NestJS and IoC, dependencies are typically services or other classes that are injected into a component to provide specific functionality.
+
+For example, we have a user class, post class, and a page class. Both the post and page classes depend on the user class to perform certain operations, such as fetching user data or validating user permissions.
+
+```typescript
+import { UserService } from './user.service'
+
+@Injectable()
+export class PostService {
+  // This service depends on the UserService to fetch post authors
+  constructor(private userService: UserService) {}
+
+  async getPostAuthor(postId: string) {
+    const post = await this.findPostById(postId)
+    return this.userService.findById(post.authorId)
+  }
+}
+
+@Injectable()
+export class PageService {
+  // This service also depends on the UserService to fetch page owners
+
+  constructor(private userService: UserService) {}
+
+  async getPageOwner(pageId: string) {
+    const page = await this.findPageById(pageId)
+    return this.userService.findById(page.ownerId)
+  }
+}
+```
+
+### What is Dependency Injection (DI)?
+
+Dependency Injection (DI) is a design pattern that allows a class to receive its dependencies from an external source rather than creating them itself. This promotes loose coupling between components and makes it easier to manage dependencies, test components in isolation, and swap out implementations without affecting the rest of the application.
+
+With dependency injection, the framework (in this case, NestJS) is responsible for creating and managing the lifecycle of dependencies. This means that you can focus on writing your business logic without worrying about how dependencies are created or managed.
+
+In NestJS, you can inject dependencies into classes using the `@Injectable()` decorator and constructor injection. When a class is decorated with `@Injectable()`, it becomes a provider that can be injected into other components, such as controllers or services.
+
+```typescript
+import { Injectable } from '@nestjs/common'
+@Injectable()
+export class UserService {
+  // This service can be injected into other components
+  findById(userId: string) {
+    // Logic to find a user by ID
+  }
+}
+```
