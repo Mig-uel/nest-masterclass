@@ -325,3 +325,87 @@ You can also generate a provider using the NestJS CLI:
 ```bash
 nest generate service users
 ```
+
+## Validation and Pipes
+
+### What are Pipes?
+
+Pipes in NestJS are used to transform or validate incoming data before it reaches the route handler. They allow you to perform operations such as data validation, transformation, and sanitization on the request data.
+
+Pipes are a powerful feature of NestJS that help you ensure that the data your application receives is in the expected format and meets certain criteria. They can be used to validate incoming data, transform it into a different format, or even throw exceptions if the data is invalid.
+
+Pipes can be applied to individual route handlers or globally to all routes in your application. They are typically used to validate request parameters, query strings, and request bodies.
+
+When we talk about an incoming request, it does not hit the controller directly. Instead, it goes through a layer of middleware and `Pipes` before reaching the controller. This allows you to perform operations on the request data before it is processed by the controller.
+
+This also applies to the response. After the controller processes the request, the response goes through a layer of `Interceptors` and `Filters` before being sent back to the client. This allows you to modify the response data, handle errors, and perform other operations before the response is sent.
+
+Request-Response lifecycle in NestJS:
+
+```mermaid
+flowchart LR
+  A[Request]
+  B[Middleware]
+  C[Filters Start]
+  D[Guards]
+  E[Interceptors - Before]
+  F[Pipes]
+  G[Controller]
+  H[Interceptors - After]
+  I[Filters End]
+  J[Response]
+
+  A --> B --> C --> D --> E --> F --> G --> H --> I --> J
+```
+
+For errors or exceptions, as long as the error or exception occur within the `Filter` boundary, NestJS will handle it gracefully and return a proper error response to the client. This allows you to centralize error handling and ensure that your application responds consistently to errors.
+You as a programmer don't have to worry about the error handling logic in your controllers or services, as it is handled by the `Filter` layer.
+
+#### Why use Pipes?
+
+Pipes are used in NestJS for several reasons:
+
+- **Data Validation**: Ensure that incoming data meets specific criteria before processing it. This helps prevent invalid data from causing issues in your application.
+  - Evaluates input data and if valid, passes it through unchanged; otherwise, it throws an exception.
+  - Example: Validating that a user ID is a valid UUID or that a string is not empty.
+- **Data Transformation**: Convert incoming data into a different format or structure that is easier to work with. This can include parsing strings into numbers, converting dates, or transforming objects.
+  - Transforms input data to the desired form (e.g., converting a string to a number or parsing a date).
+  - Example: Converting a string representation of a date into a JavaScript Date object.
+- **Data Sanitization**: Remove any unwanted or potentially harmful data from the request. This can help prevent security vulnerabilities such as SQL injection or cross-site scripting (XSS) attacks.
+  - Sanitizes input data to remove any unwanted characters or formats (e.g., trimming whitespace, removing HTML tags).
+- **Reusability**: Pipes can be reused across different routes and controllers, promoting code reuse and reducing duplication.
+
+#### Types of Pipes
+
+Pipes in NestJS can be categorized into two main types:
+
+- **Built-in Pipes**: NestJS provides several built-in pipes that can be used for common tasks such as validation, transformation, and sanitization. Some of the most commonly used built-in pipes include:
+  - `ValidationPipe`: Validates incoming data against a set of rules defined using class-validator decorators.
+  - `ParseIntPipe`: Converts a string to an integer.
+  - `ParseBoolPipe`: Converts a string to a boolean.
+  - `ParseUUIDPipe`: Validates and parses a UUID string.
+  - `DefaultValuePipe`: Sets a default value for a parameter if it is not provided.
+  - `TrimPipe`: Trims whitespace from strings.
+- **Custom Pipes**: You can create your own custom pipes to handle specific validation or transformation logic that is not covered by the built-in pipes. Custom pipes can be created by implementing the `PipeTransform` interface and defining the `transform` method.
+
+Example of a custom pipe:
+
+```typescript
+import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common'
+@Injectable()
+export class CustomPipe implements PipeTransform {
+  transform(value: any, metadata: ArgumentMetadata) {
+    // Custom validation or transformation logic
+    if (typeof value !== 'string') {
+      throw new Error('Value must be a string')
+    }
+    return value.trim() // Example transformation: trim whitespace
+  }
+}
+```
+
+You can also create custom pipes using the NestJS CLI:
+
+```bash
+nest generate pipe custom
+```
