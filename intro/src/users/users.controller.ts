@@ -40,11 +40,9 @@ export class UsersController {
   ): Record<string, any> {
     const { id } = getUserParamDto;
 
-    if (!id) return this.usersService.findAll({ id }, limit, page);
+    if (!id) return this.usersService.findAll(limit, page);
 
-    return {
-      id,
-    };
+    return this.usersService.findOneById(id);
   }
 
   @Post()
