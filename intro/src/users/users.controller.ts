@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Get,
   Headers,
   Ip,
@@ -32,12 +33,14 @@ export class UsersController {
       }),
     )
     id?: number,
-    @Query('limit') limit?: string,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit?: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
   ): Record<string, any> {
     return {
       message: id ? 'Params passed' : 'No params passed',
       params: id || 'N/A',
       limit: limit || 'N/A',
+      page: page || 'N/A',
     };
   }
 
