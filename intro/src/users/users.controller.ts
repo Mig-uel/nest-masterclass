@@ -11,6 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { GetUsersParamDto } from './dtos/get-users-param.dto';
 
 @Controller('users')
 export class UsersController {
@@ -27,16 +28,12 @@ export class UsersController {
    */
   @Get('{/:id}')
   getUsers(
-    @Param(
-      'id',
-      new ParseIntPipe({
-        optional: true,
-      }),
-    )
-    id?: number,
+    @Param() getUserParamDto: GetUsersParamDto,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit?: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page?: number,
   ): Record<string, any> {
+    const { id } = getUserParamDto;
+
     return {
       message: id ? 'Params passed' : 'No params passed',
       params: id || 'N/A',
