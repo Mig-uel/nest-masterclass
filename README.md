@@ -522,3 +522,17 @@ In NestJS, dependencies can be categorized into several types based on their sco
 - **Intra-Module Dependencies**: These are dependencies that are specific to a module and are not shared with other modules. They are typically used for services that provide functionality only within the context of a specific module.
 - **Inter-Module Dependencies**: These are dependencies that are shared between multiple modules. They are typically used for services that provide functionality that is needed across different parts of the application.
 - **Cross-Module Dependencies**: These are dependencies that span multiple modules and may require coordination between them. They are typically used for services that need to interact with components from different modules.
+
+## Documenting Code
+
+Documentation is an essential part of software development that helps developers understand how to use and maintain code. In NestJS, you can document your code using comments, JSDoc annotations, and tools like Swagger for API documentation.
+
+### Types of Documentation
+
+- **API Documentation**: This type of documentation describes the endpoints, request/response formats, and usage of the API. It is typically generated automatically from the code using tools like Swagger.
+  - Useful for clients and developers who need to understand how to interact with the API.
+  - For API documentation, NestJS uses OpenAPI, previously known as Swagger, to generate interactive API documentation.
+  - The documentation is hosted at a specific endpoint (e.g., `/api-docs`) and provides details about the available endpoints, request parameters, response formats, and example requests/responses.
+- **Code Documentation**: This type of documentation provides explanations and comments within the code itself. It helps developers understand the purpose and functionality of specific classes, methods, and properties.
+  - Useful for developers who need to maintain or extend the codebase.
+  - For code documentation, NestJS uses Compodoc, which is a documentation generator for TypeScript projects.
