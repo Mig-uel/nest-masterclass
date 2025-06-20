@@ -19,7 +19,7 @@ export class UsersService {
   /**
    * Find a user by ID
    */
-  findOneById(id: number) {
+  findOneById(id: string) {
     return {
       id,
       firstName: 'Alice',
