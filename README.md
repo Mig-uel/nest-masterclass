@@ -493,3 +493,21 @@ export class UserService {
   }
 }
 ```
+
+### Advantages of Dependency Injection
+
+Dependency Injection offers several advantages that contribute to better software design and development practices:
+
+- **Decoupling**: Components are less dependent on specific implementations, allowing for easier changes and maintenance.
+- **Testability**: Dependencies can be easily mocked or replaced in unit tests, making it easier to test components in isolation.
+- **Reusability**: Components can be reused across different parts of the application without being tightly coupled to specific implementations.
+- **Flexibility**: You can easily swap out implementations of dependencies without affecting the rest of the application.
+- **Configuration**: Dependencies can be configured and managed centrally, allowing for better control over the application's behavior.
+
+### How module encapsulates everything
+
+In NestJS, modules encapsulate related components, such as controllers, services, and providers, into cohesive units of functionality. This modular architecture promotes separation of concerns and allows for better organization of code.
+
+Each module can export its components, making them available for use in other modules. This encourages a clear structure and helps manage dependencies more effectively. By grouping related functionality together, modules also make it easier to understand the overall architecture of the application.
+
+
