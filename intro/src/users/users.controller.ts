@@ -7,11 +7,13 @@ import {
   Ip,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
+import { PatchUserDto } from './dtos/patch-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -55,5 +57,10 @@ export class UsersController {
       password: createUserDto.password,
       ip,
     };
+  }
+
+  @Patch()
+  patchUser(@Body() patchUserDto: PatchUserDto) {
+    console.log(patchUserDto);
   }
 }
