@@ -409,3 +409,29 @@ You can also create custom pipes using the NestJS CLI:
 ```bash
 nest generate pipe custom
 ```
+
+### Introduction to Data Transfer Objects (DTOs)
+
+Data Transfer Objects (DTOs) are objects that define the structure of data that is sent over the network. They are used to validate and transform incoming data before it reaches the controller or service layer. DTOs help ensure that the data your application receives is in the expected format and meets certain criteria.
+
+DTOs are typically used in conjunction with pipes to validate and transform incoming data. They allow you to define the expected structure of the data, including required fields, data types, and validation rules.
+
+DTOs are often defined as classes with properties that correspond to the expected data structure. You can use decorators from libraries like `class-validator` to define validation rules for each property.
+
+Example of a DTO:
+
+```typescript
+import { IsString, IsInt, IsOptional } from 'class-validator'
+
+export class CreateUserDto {
+  @IsString()
+  name: string
+
+  @IsInt()
+  age: number
+
+  @IsOptional()
+  @IsString()
+  email?: string
+}
+```
