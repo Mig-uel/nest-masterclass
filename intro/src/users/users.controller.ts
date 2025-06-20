@@ -61,6 +61,6 @@ export class UsersController {
 
   @Patch()
   patchUser(@Body() patchUserDto: PatchUserDto) {
-    console.log(patchUserDto);
+    return patchUserDto;
   }
 }
