@@ -5,6 +5,7 @@ import {
   Headers,
   Ip,
   Param,
+  ParseIntPipe,
   Post,
   Query,
 } from '@nestjs/common';
@@ -24,9 +25,15 @@ export class UsersController {
    */
   @Get('{/:id}')
   getUsers(
-    @Param('id') id?: string,
+    @Param(
+      'id',
+      new ParseIntPipe({
+        optional: true,
+      }),
+    )
+    id?: number,
     @Query('limit') limit?: string,
-  ): Record<string, string> {
+  ): Record<string, any> {
     return {
       message: id ? 'Params passed' : 'No params passed',
       params: id || 'N/A',
