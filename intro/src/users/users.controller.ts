@@ -9,7 +9,9 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -46,15 +48,16 @@ export class UsersController {
 
   @Post()
   createUsers(
-    @Body('email') email: string,
-    // Get headers from request
-    @Headers() headers: any,
-    // Get IP address of the request
-    @Ip() ip: any,
-  ): Record<string, string> {
-    console.log(email);
-    console.log(headers);
-    console.log(ip);
-    return {};
+    @Body(new ValidationPipe()) createUserDto: CreateUserDto,
+    @Headers() _: any, // Get headers from request
+    @Ip() ip: string, // Get IP address of the request
+  ): CreateUserDto & { ip: string } {
+    return {
+      firstName: createUserDto.firstName,
+      lastName: createUserDto.lastName,
+      email: createUserDto.email,
+      password: createUserDto.password,
+      ip,
+    };
   }
 }
