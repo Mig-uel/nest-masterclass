@@ -536,3 +536,10 @@ Documentation is an essential part of software development that helps developers
 - **Code Documentation**: This type of documentation provides explanations and comments within the code itself. It helps developers understand the purpose and functionality of specific classes, methods, and properties.
   - Useful for developers who need to maintain or extend the codebase.
   - For code documentation, NestJS uses Compodoc, which is a documentation generator for TypeScript projects.
+
+### OpenAPI vs. Swagger
+
+OpenAPI and Swagger are often used interchangeably, but they refer to different aspects of API documentation:
+
+- **OpenAPI**: This is a specification for building APIs that describes the structure of the API, including endpoints, request/response formats, and authentication methods. It is a standard format for API documentation.
+- **Swagger**: This is a set of tools and libraries that implement the OpenAPI specification. It includes a user interface for exploring and testing APIs, as well as tools for generating client libraries and server stubs.
