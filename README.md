@@ -510,4 +510,15 @@ In NestJS, modules encapsulate related components, such as controllers, services
 
 Each module can export its components, making them available for use in other modules. This encourages a clear structure and helps manage dependencies more effectively. By grouping related functionality together, modules also make it easier to understand the overall architecture of the application.
 
+### Types of Dependencies
 
+In NestJS, dependencies can be categorized into several types based on their scope and usage:
+
+- **Singleton Dependencies**: These are created once and shared across the entire application. They are typically used for services that do not maintain state or require a single instance.
+- **Request-scoped Dependencies**: These are created for each incoming request and are typically used for services that need to maintain state or context specific to a request.
+- **Transient Dependencies**: These are created each time they are requested and are typically used for services that require a fresh instance for each use.
+- **Global Dependencies**: These are available throughout the entire application and can be injected into any component. They are typically used for services that provide shared functionality across multiple modules.
+
+- **Intra-Module Dependencies**: These are dependencies that are specific to a module and are not shared with other modules. They are typically used for services that provide functionality only within the context of a specific module.
+- **Inter-Module Dependencies**: These are dependencies that are shared between multiple modules. They are typically used for services that provide functionality that is needed across different parts of the application.
+- **Cross-Module Dependencies**: These are dependencies that span multiple modules and may require coordination between them. They are typically used for services that need to interact with components from different modules.
