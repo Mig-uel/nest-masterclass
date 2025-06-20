@@ -308,3 +308,14 @@ Think of providers as the services that handle the business logic of your applic
 You can also think of providers as additional classes in a module that help you add business logic to your module. They can be used to encapsulate complex logic, interact with external APIs, or perform data transformations.
 
 While the job of the controller is handle routing logic, the job of the provider is to handle business logic. You should not be writing business logic in your controllers, as it can lead to tightly coupled code and make it harder to maintain and test your application.
+
+Providers are typically decorated with the `@Injectable()` decorator, which allows them to be injected into other components, such as controllers or other providers.
+
+```typescript
+import { Injectable } from '@nestjs/common'
+
+@Injectable()
+export class UsersService {
+  // Business logic for user management
+}
+```
