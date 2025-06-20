@@ -42,7 +42,7 @@ export class UsersController {
 
     if (!id) return this.usersService.findAll(limit, page);
 
-    return this.usersService.findOneById(id);
+    return this.usersService.findOneById(id.toString());
   }
 
   @Post()
