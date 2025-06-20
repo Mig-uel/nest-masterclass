@@ -8,7 +8,8 @@ async function bootstrap() {
   // Globally set up ValidationPipe
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
+      whitelist: true, // strips unknown properties from request body
+      forbidNonWhitelisted: true, // throws an error if unknown properties are found
     }),
   );
 
