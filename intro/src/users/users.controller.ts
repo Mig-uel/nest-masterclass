@@ -14,9 +14,13 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
+  // Inject Users Service
+  constructor(private readonly usersService: UsersService) {}
+
   /**
    * Endpoint - /users/id?limit=10&page=1
    * Param id - optional, convert to integer, cannot have a default value
