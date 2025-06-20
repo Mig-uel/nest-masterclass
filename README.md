@@ -298,3 +298,13 @@ We can also generate a controller using the NestJS CLI:
 ```bash
 nest generate controller users
 ```
+
+## Intro to Providers
+
+Providers in NestJS are classes that encapsulate business logic and can be injected into controllers or other providers. They are the backbone of the application's functionality, allowing you to define services, repositories, and other components that can be reused across your application.
+
+Think of providers as the services that handle the business logic of your application. They are responsible for processing data, interacting with databases, and performing other operations that are not directly related to handling HTTP requests.
+
+You can also think of providers as additional classes in a module that help you add business logic to your module. They can be used to encapsulate complex logic, interact with external APIs, or perform data transformations.
+
+While the job of the controller is handle routing logic, the job of the provider is to handle business logic. You should not be writing business logic in your controllers, as it can lead to tightly coupled code and make it harder to maintain and test your application.
