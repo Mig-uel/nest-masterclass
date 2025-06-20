@@ -1,0 +1,11 @@
+# PATCH
+# Description: Update a user
+# Request Body: JSON object with user details to update
+PATCH http://localhost:3000/users
+Content-Type: application/json
+# Request Body
+{
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "email": "jane.doe@example.com"
+}
