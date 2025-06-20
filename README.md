@@ -319,3 +319,9 @@ export class UsersService {
   // Business logic for user management
 }
 ```
+
+You can also generate a provider using the NestJS CLI:
+
+```bash
+nest generate service users
+```
