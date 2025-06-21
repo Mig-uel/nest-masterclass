@@ -1,15 +1,21 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 
+/**
+ * Service class to connect to Users table and perform business operations
+ */
 @Injectable()
 export class UsersService {
+  /**
+   * Injects AuthService via forwardRef
+   */
   constructor(
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
   ) {}
 
   /**
-   * Find all users
+   * The method to find all Users from the users table
    */
   findAll(limit: number, page: number) {
     console.log(limit, page);
@@ -27,7 +33,7 @@ export class UsersService {
   }
 
   /**
-   * Find a user by ID
+   * The method to find a single user by ID
    */
   findOneById(id: string) {
     return {

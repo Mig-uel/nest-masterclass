@@ -119,6 +119,13 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Service class to connect to Users table and perform business operations</p>
+
+            </p>
 
 
 
@@ -164,12 +171,14 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/users/users.service.ts:5</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/users/users.service.ts:8</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Injects AuthService via forwardRef</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -227,15 +236,15 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="14"
-                                    class="link-to-prism">src/users/users.service.ts:14</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="20"
+                                    class="link-to-prism">src/users/users.service.ts:20</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Find all users</p>
+                        <div class="io-description"><p>The method to find all Users from the users table</p>
 </div>
 
                             <div class="io-description">
@@ -308,15 +317,15 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="32"
-                                    class="link-to-prism">src/users/users.service.ts:32</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="38"
+                                    class="link-to-prism">src/users/users.service.ts:38</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Find a user by ID</p>
+                        <div class="io-description"><p>The method to find a single user by ID</p>
 </div>
 
                             <div class="io-description">
@@ -366,15 +375,21 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { forwardRef, Inject, Injectable } from &#x27;@nestjs/common&#x27;;
 import { AuthService } from &#x27;src/auth/auth.service&#x27;;
 
+/**
+ * Service class to connect to Users table and perform business operations
+ */
 @Injectable()
 export class UsersService {
+  /**
+   * Injects AuthService via forwardRef
+   */
   constructor(
     @Inject(forwardRef(() &#x3D;&gt; AuthService))
     private readonly authService: AuthService,
   ) {}
 
   /**
-   * Find all users
+   * The method to find all Users from the users table
    */
   findAll(limit: number, page: number) {
     console.log(limit, page);
@@ -392,7 +407,7 @@ export class UsersService {
   }
 
   /**
-   * Find a user by ID
+   * The method to find a single user by ID
    */
   findOneById(id: string) {
     return {
