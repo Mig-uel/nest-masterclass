@@ -47,6 +47,10 @@ export class PostsController {
   @ApiOperation({
     summary: 'Updates a blog post',
   })
+  @ApiResponse({
+    description: 'You get a 200 response if the post is updated successfully',
+    status: 200,
+  })
   @Patch(':id')
   updatePost(
     @Param('id', ParseIntPipe) id: number,
