@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { PatchPostDto } from './dtos/patch-post.dto';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -33,5 +42,16 @@ export class PostsController {
   @Post()
   createPost(@Body() createPostDto: CreatePostDto) {
     return createPostDto;
+  }
+
+  @ApiOperation({
+    summary: 'Updates a blog post',
+  })
+  @Patch(':id')
+  updatePost(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() patchPostDto: PatchPostDto,
+  ): any {
+    return { ...patchPostDto, id };
   }
 }
