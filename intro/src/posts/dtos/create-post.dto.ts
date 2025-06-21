@@ -29,7 +29,6 @@ enum Status {
 
 export class CreatePostDto {
   @MinLength(3)
-  @IsNotEmpty()
   @IsString()
   title: string;
 
@@ -43,7 +42,6 @@ export class CreatePostDto {
     message:
       'A slug should be all lowercase letters, substituting spaces for dashes',
   })
-  @IsNotEmpty()
   @IsString()
   slug: string;
 
@@ -56,7 +54,6 @@ export class CreatePostDto {
   @IsOptional()
   content?: string;
 
-  @IsNotEmpty()
   @IsJSON()
   @IsOptional()
   schema?: string;
