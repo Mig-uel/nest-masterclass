@@ -5,7 +5,11 @@ import { UsersService } from './../users/users.service';
 export class PostsService {
   constructor(private readonly usersService: UsersService) {}
 
-  findAll(uid: string) {
+  findAll() {
+    return [{}];
+  }
+
+  findAllPostsByUserId(uid: string) {
     const user = this.usersService.findOneById(uid);
 
     if (!user) return { message: 'No user found!' };
