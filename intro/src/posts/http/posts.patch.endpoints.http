@@ -1,0 +1,11 @@
+# PATCH /posts/:id
+# Description: Update an existing post.
+PATCH http://localhost:3000/posts/34
+Content-Type: application/json
+{
+  "title": "Updated Post",
+  "content": "This is the updated post content.",
+  "postType": "post",
+  "slug": "updated-post",
+  "status": "published"
+}
