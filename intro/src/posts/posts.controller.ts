@@ -7,11 +7,17 @@ import { PostsService } from './posts.service';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @ApiOperation({
+    summary: 'Fetches all posts',
+  })
   @Get()
   getPosts() {
     return this.postsService.findAll();
   }
 
+  @ApiOperation({
+    summary: 'Fetches all posts by a specific user',
+  })
   @Get(':uid')
   getPostsByUserId(@Param('uid') uid: string) {
     return this.postsService.findAllPostsByUserId(uid);
