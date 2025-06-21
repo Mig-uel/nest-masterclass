@@ -1,12 +1,23 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { PostsService } from './posts.service';
+import { CreatePostDto } from './dtos/create-post.dto';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @Get()
+  getPosts() {
+    return this.postsService.findAll();
+  }
+
   @Get(':uid')
-  getPosts(@Param('uid') uid: string) {
-    return this.postsService.findAll(uid);
+  getPostsByUserId(@Param('uid') uid: string) {
+    return this.postsService.findAllPostsByUserId(uid);
+  }
+
+  @Post()
+  createPost(@Body() createPostDto: CreatePostDto) {
+    console.log(createPostDto);
   }
 }
