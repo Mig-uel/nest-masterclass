@@ -544,3 +544,69 @@ OpenAPI and Swagger are often used interchangeably, but they refer to different 
 
 - **OpenAPI**: This is a specification for building APIs that describes the structure of the API, including endpoints, request/response formats, and authentication methods. It is a standard format for API documentation.
 - **Swagger**: This is a set of tools and libraries that implement the OpenAPI specification. It includes a user interface for exploring and testing APIs, as well as tools for generating client libraries and server stubs.
+
+## Understanding Repository Pattern
+
+The Repository Pattern is a design pattern that provides a way to manage data access and encapsulate the logic for retrieving and storing data. It acts as an intermediary between the application and the data source, allowing you to abstract away the details of data access and focus on the business logic.
+
+In NestJS, the Repository Pattern is commonly used with TypeORM to manage database interactions. By defining repositories for your entities, you can centralize data access logic and promote code reusability.
+
+## Entities and Understanding the Structure
+
+Entities in NestJS represent the data model of your application. They define the structure of the data and how it is stored in the database. Entities are typically decorated with TypeORM decorators to specify their properties, relationships, and constraints.
+
+An entity is a class that represents a table in the database. Each instance of the entity corresponds to a row in the table, and each property of the entity corresponds to a column in the table.
+
+When we talk about a user entity, we are referring to the user table in the database. It is nothing but a file that defines the structure of the user table, including its properties and relationships with other entities.
+
+**Remember: An entity is a class that represents a table in the database.**
+
+Once you define an entity, you are able to inject a repository for that entity into your services or controllers. The repository provides methods for performing CRUD (Create, Read, Update, Delete) operations on the entity.
+
+You do not create the repository manually. Instead, TypeORM automatically creates a repository for each entity when you import the entity into your module. You can then inject the repository into your services or controllers using dependency injection.
+
+### Example of a User Entity
+
+```typescript
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number
+
+  @Column()
+  username: string
+
+  @Column()
+  email: string
+
+  @Column()
+  password: string
+
+  @Column({ default: true })
+  isActive: boolean
+
+  @CreateDateColumn()
+  createdAt: Date
+
+  @UpdateDateColumn()
+  updatedAt: Date
+}
+```
+
+This example defines a `User` entity with properties such as `id`, `username`, `email`, `password`, `isActive`, `createdAt`, and `updatedAt`. Each property is decorated with TypeORM decorators to specify its type and constraints.
+
+### Example of a UsersService
+
+```typescript
+Injectable()
+export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>
+  ) {}
+
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find()
+  }
+}
+```
