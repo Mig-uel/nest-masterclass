@@ -536,6 +536,7 @@ Documentation is an essential part of software development that helps developers
 - **Code Documentation**: This type of documentation provides explanations and comments within the code itself. It helps developers understand the purpose and functionality of specific classes, methods, and properties.
   - Useful for developers who need to maintain or extend the codebase.
   - For code documentation, NestJS uses Compodoc, which is a documentation generator for TypeScript projects.
+  - Compodoc uses JSDoc annotations to generate documentation for classes, methods, properties, and modules.
 
 ### OpenAPI vs. Swagger
 
