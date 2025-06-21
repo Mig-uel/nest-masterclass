@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
   IsEnum,
@@ -10,6 +11,7 @@ import {
   IsUrl,
   Matches,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
 
 enum PostType {
@@ -28,6 +30,15 @@ enum Status {
 
 interface IPostMetadata {
   key: string;
+  value: any;
+}
+
+class MetaOptions implements IPostMetadata {
+  @IsNotEmpty()
+  @IsString()
+  key: string;
+
+  @IsNotEmpty()
   value: any;
 }
 
@@ -78,7 +89,9 @@ export class CreatePostDto {
   @IsOptional()
   tags?: string[];
 
+  @ValidateNested({ each: true })
+  @Type(() => MetaOptions)
   @ArrayNotEmpty()
   @IsOptional()
-  metaOptions?: IPostMetadata[];
+  metaOptions?: MetaOptions[];
 }
