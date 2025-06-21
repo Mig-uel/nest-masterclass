@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { PostsService } from './posts.service';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { PostsService } from './posts.service';
 
 @Controller('posts')
 export class PostsController {
@@ -16,6 +17,13 @@ export class PostsController {
     return this.postsService.findAllPostsByUserId(uid);
   }
 
+  @ApiOperation({
+    summary: 'Creates a new blog post',
+  })
+  @ApiResponse({
+    description: 'You get a 201 response if your post is created successfully',
+    status: 201,
+  })
   @Post()
   createPost(@Body() createPostDto: CreatePostDto) {
     return createPostDto;
