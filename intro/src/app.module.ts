@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
+import { User } from './users/user.entity';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { UsersModule } from './users/users.module';
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
       synchronize: true,
-      entities: [],
+      entities: [User],
       ssl: {
         rejectUnauthorized: false,
       },
