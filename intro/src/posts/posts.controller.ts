@@ -18,6 +18,6 @@ export class PostsController {
 
   @Post()
   createPost(@Body() createPostDto: CreatePostDto) {
-    console.log(createPostDto);
+    return createPostDto;
   }
 }
