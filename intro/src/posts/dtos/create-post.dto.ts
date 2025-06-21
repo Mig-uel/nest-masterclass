@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
-  IsArray,
   IsEnum,
   IsISO8601,
   IsJSON,
@@ -25,6 +25,11 @@ enum Status {
   SCHEDULED = 'scheduled',
   REVIEW = 'review',
   published = 'published',
+}
+
+interface IPostMetadata {
+  key: string;
+  value: any;
 }
 
 export class CreatePostDto {
@@ -74,6 +79,7 @@ export class CreatePostDto {
   @IsOptional()
   tags?: string[];
 
-  @IsArray()
-  metaOptions: Record<string, string>[];
+  @ArrayNotEmpty()
+  @IsOptional()
+  metaOptions?: IPostMetadata[];
 }
