@@ -5,11 +5,10 @@ Content-Type: application/json
 {
   "title": "New Post",
   "content": "This is a new post content.",
-  "postType": "post",
   "slug": "new-post",
-  "status": "draft",
-  "metaOptions": [{
-    "key": 1,
-    "value": "John Doe"
-  }]
+  "postType": "post",
+  "status": "published",
+  "metaOptions": {
+    "metaValue": "{\"sidebarEnabled\": true, \"theme\": \"dark\"}"
+  }
 }
