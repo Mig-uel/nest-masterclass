@@ -20,7 +20,7 @@ export class Tag {
   name: string;
 
   @Column({
-    length: 512,
+    length: 256,
     nullable: false,
     unique: true,
   })
@@ -38,6 +38,7 @@ export class Tag {
   schema?: string;
 
   @Column({
+    length: 1024,
     nullable: true,
   })
   featuredImageUrl?: string;
