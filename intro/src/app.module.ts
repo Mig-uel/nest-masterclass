@@ -8,6 +8,7 @@ import { Post } from './posts/entities/post.entity';
 import { PostsModule } from './posts/posts.module';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
+import { TagsModule } from './tags/tags.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UsersModule } from './users/users.module';
         rejectUnauthorized: false,
       },
     }),
+    TagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
