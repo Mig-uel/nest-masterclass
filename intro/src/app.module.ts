@@ -4,9 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { Post } from './posts/entities/post.entity';
 import { PostsModule } from './posts/posts.module';
-import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { User } from './users/entities/user.entity';
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
       synchronize: true,
-      entities: [User],
+      entities: [User, Post],
       ssl: {
         rejectUnauthorized: false,
       },
