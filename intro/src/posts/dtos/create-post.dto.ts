@@ -13,27 +13,9 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
+import { type IPostMetadata, PostType, Status } from '../types/types';
 
-enum PostType {
-  POST = 'post',
-  PAGE = 'page',
-  STORY = 'story',
-  SERIES = 'series',
-}
-
-enum Status {
-  DRAFT = 'draft',
-  SCHEDULED = 'scheduled',
-  REVIEW = 'review',
-  published = 'published',
-}
-
-interface IPostMetadata {
-  key: string;
-  value: any;
-}
-
-class MetaOptions implements IPostMetadata {
+export class MetaOptions implements IPostMetadata {
   @IsNotEmpty()
   @IsString()
   key: string;
