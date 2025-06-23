@@ -13,6 +13,7 @@ export class Post {
   title: string;
 
   @Column({
+    default: PostType.POST,
     enum: PostType,
     nullable: false,
   })
@@ -24,6 +25,7 @@ export class Post {
   slug: string;
 
   @Column({
+    default: Status.DRAFT,
     enum: Status,
     nullable: false,
   })
