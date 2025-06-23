@@ -56,19 +56,22 @@ export class UsersController {
     return this.usersService.findOneById(id.toString());
   }
 
+  /**
+   * Post route to create user
+   * @param createUserDto
+   * @param _
+   * @param ip
+   * @returns
+   */
   @Post()
   createUser(
     @Body() createUserDto: CreateUserDto,
     @Headers() _: any, // Get headers from request
     @Ip() ip: string, // Get IP address of the request
-  ): CreateUserDto & { ip: string } {
-    return {
-      firstName: createUserDto.firstName,
-      lastName: createUserDto.lastName,
-      email: createUserDto.email,
-      password: createUserDto.password,
-      ip,
-    };
+  ) {
+    console.log(ip);
+
+    return this.usersService.createUser(createUserDto);
   }
 
   @Patch()
