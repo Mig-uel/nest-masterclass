@@ -14,7 +14,7 @@ export class Post {
   id: string;
 
   @Column({
-    length: 15,
+    length: 32,
     nullable: false,
   })
   title: string;
