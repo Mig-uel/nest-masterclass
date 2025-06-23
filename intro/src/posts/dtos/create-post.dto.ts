@@ -13,8 +13,8 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
+import { CreateMetaOptionsDto } from '../../meta-options/dtos/create-meta-options.dto';
 import { PostType, Status } from '../types/types';
-import { MetaOptions } from '../../meta-options/dtos/create-meta-options.dto';
 
 export class CreatePostDto {
   @ApiProperty({
@@ -117,8 +117,8 @@ export class CreatePostDto {
     type: 'array',
   })
   @ValidateNested({ each: true })
-  @Type(() => MetaOptions)
+  @Type(() => CreateMetaOptionsDto)
   @ArrayNotEmpty()
   @IsOptional()
-  metaOptions?: MetaOptions[];
+  metaOptions?: CreateMetaOptionsDto[];
 }
