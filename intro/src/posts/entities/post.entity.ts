@@ -1,5 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { PostType, Status } from '../types/types';
+import { MetaOption } from 'src/meta-options/entities/meta-option.entity';
 
 @Entity()
 export class Post {
@@ -61,9 +68,7 @@ export class Post {
   // })
   // tags?: string[];
 
-  // @Column({
-  //   nullable: true,
-  //   type: 'array',
-  // })
-  // metaOptions?: Record<string, any>[];
+  @ManyToOne(() => MetaOption)
+  @JoinColumn()
+  metaOptions?: MetaOption;
 }
