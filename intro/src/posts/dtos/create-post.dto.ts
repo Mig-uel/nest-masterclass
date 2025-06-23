@@ -13,16 +13,8 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { type IPostMetadata, PostType, Status } from '../types/types';
-
-export class MetaOptions implements IPostMetadata {
-  @IsNotEmpty()
-  @IsString()
-  key: string;
-
-  @IsNotEmpty()
-  value: any;
-}
+import { PostType, Status } from '../types/types';
+import { MetaOptions } from './create-meta-options.dto';
 
 export class CreatePostDto {
   @ApiProperty({
