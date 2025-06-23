@@ -10,6 +10,7 @@ import { Tag } from './tags/entities/tag.entity';
 import { TagsModule } from './tags/tags.module';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
+import { MetaOptionsModule } from './meta-options/meta-options.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UsersModule } from './users/users.module';
       },
     }),
     TagsModule,
+    MetaOptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
