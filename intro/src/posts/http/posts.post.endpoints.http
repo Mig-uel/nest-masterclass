@@ -3,12 +3,12 @@
 POST http://localhost:3000/posts
 Content-Type: application/json
 {
-  "title": "New Post",
-  "content": "This is a new post content.",
-  "slug": "new-post",
+  "title": "Wow, this is NestJS in action!",
+  "content": "This is a new post created using NestJS.",
+  "slug": "wow-this-is-nestjs-in-action",
   "postType": "post",
   "status": "published",
   "metaOptions": {
-    "metaValue": "{\"sidebarEnabled\": true, \"theme\": \"dark\"}"
+    "metaValue": "{\"sidebarEnabled\": false, \"theme\": \"light\"}"
   }
 }
