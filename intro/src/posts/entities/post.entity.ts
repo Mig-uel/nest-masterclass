@@ -70,5 +70,5 @@ export class Post {
 
   @ManyToOne(() => MetaOption)
   @JoinColumn()
-  metaOptions?: MetaOption;
+  metaOption?: MetaOption;
 }
