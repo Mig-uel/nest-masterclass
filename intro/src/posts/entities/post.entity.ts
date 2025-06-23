@@ -60,7 +60,7 @@ export class Post {
     nullable: true,
     type: 'timestamptz',
   })
-  publishOn?: string;
+  publishOn?: Date;
 
   // @Column({
   //   nullable: true,
