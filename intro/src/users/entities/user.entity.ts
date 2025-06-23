@@ -5,17 +5,26 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({
+    length: '25',
+    nullable: false,
+  })
   firstName: string;
 
   @Column({
-    default: '',
+    length: 25,
+    nullable: true,
   })
   lastName?: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+    unique: true,
+  })
   email: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   password: string;
 }
