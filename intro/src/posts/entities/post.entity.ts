@@ -68,7 +68,9 @@ export class Post {
   // })
   // tags?: string[];
 
-  @ManyToOne(() => MetaOption)
+  @ManyToOne(() => MetaOption, {
+    cascade: ['insert', 'remove', 'update'],
+  })
   @JoinColumn()
   metaOption?: MetaOption;
 }
