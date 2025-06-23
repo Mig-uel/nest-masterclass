@@ -21,6 +21,7 @@ export class Post {
 
   @Column({
     nullable: false,
+    unique: true,
   })
   slug: string;
 
