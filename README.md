@@ -610,3 +610,23 @@ export class UsersService {
   }
 }
 ```
+
+## Relational Databases
+
+### Relationships in Relational Databases
+
+Relational databases use relationships to connect different entities (tables) based on their associations. These relationships allow you to model complex data structures and enforce data integrity.
+
+There are three main types of relationships in relational databases:
+
+- **One-to-One**: Each record in one table is associated with exactly one record in another table. For example, a user can have one profile.
+- **One-to-Many**: A record in one table can be associated with multiple records in another table. For example, a user can have multiple posts.
+- **Many-to-Many**: Records in one table can be associated with multiple records in another table, and vice versa. For example, a user can have multiple roles, and a role can be assigned to multiple users.
+
+### Why Use Relational Databases?
+
+Relational databases are widely used for several reasons:
+
+- **Avoid Data Duplication**: By using relationships, you can avoid duplicating data across multiple tables, which helps maintain data integrity and reduces storage requirements.
+- **Accurate Data**: Relational databases enforce data integrity through constraints and relationships, ensuring that the data remains accurate and consistent.
+- **Flexibility**: Relational databases allow you to model complex data structures and relationships, making it easier to represent real-world scenarios.
