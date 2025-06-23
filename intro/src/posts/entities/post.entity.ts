@@ -55,15 +55,15 @@ export class Post {
   })
   publishOn?: string;
 
-  @Column({
-    nullable: true,
-    type: 'array',
-  })
-  tags?: string[];
+  // @Column({
+  //   nullable: true,
+  //   type: 'array',
+  // })
+  // tags?: string[];
 
-  @Column({
-    nullable: true,
-    type: 'array',
-  })
-  metaOptions?: Record<string, any>[];
+  // @Column({
+  //   nullable: true,
+  //   type: 'array',
+  // })
+  // metaOptions?: Record<string, any>[];
 }
