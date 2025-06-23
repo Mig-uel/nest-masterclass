@@ -1,5 +1,9 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
+import { Injectable } from '@nestjs/common';
+
+// Repo
+import { InjectRepository } from '@nestjs/typeorm';
+import type { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
 
 /**
  * Service class to connect to Users table and perform business operations
@@ -7,11 +11,10 @@ import { AuthService } from 'src/auth/auth.service';
 @Injectable()
 export class UsersService {
   /**
-   * Injects AuthService via forwardRef
+   * Injects User Repository
    */
   constructor(
-    @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
 
   /**
@@ -19,9 +22,6 @@ export class UsersService {
    */
   findAll(limit: number, page: number) {
     console.log(limit, page);
-
-    const isAuth = this.authService.isAuth();
-    console.log(isAuth);
 
     return [
       { firstName: 'Alice', email: 'alice@example.com' },
