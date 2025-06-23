@@ -31,7 +31,7 @@ export class UsersService {
     });
 
     // Handle exception
-    if (existingUser) {
+    if (existingUser.length) {
       // Handle exception logic
       return;
     }
