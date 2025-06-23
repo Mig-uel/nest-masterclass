@@ -14,7 +14,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { PostType, Status } from '../types/types';
-import { MetaOptions } from './create-meta-options.dto';
+import { MetaOptions } from '../../meta-options/dtos/create-meta-options.dto';
 
 export class CreatePostDto {
   @ApiProperty({

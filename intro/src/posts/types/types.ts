@@ -13,6 +13,5 @@ export enum Status {
 }
 
 export interface IPostMetadata {
-  key: string;
-  value: any;
+  metaValue: string;
 }
