@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 // Repo
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,6 +17,31 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
+
+  /**
+   * Create User
+   * @param createUserDto CreateUserDto
+   */
+  async createUser(createUserDto: CreateUserDto) {
+    // Check if user email exists
+    const existingUser = await this.usersRepository.find({
+      where: {
+        email: createUserDto.email,
+      },
+    });
+
+    // Handle exception
+    if (existingUser) {
+      // Handle exception logic
+      return;
+    }
+
+    // Create new user
+    const newUser = this.usersRepository.create(createUserDto);
+
+    // Return the new user
+    return await this.usersRepository.save(newUser);
+  }
 
   /**
    * The method to find all Users from the users table
