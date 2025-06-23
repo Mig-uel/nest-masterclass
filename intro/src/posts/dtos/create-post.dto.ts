@@ -108,7 +108,6 @@ export class CreatePostDto {
       },
     },
     required: false,
-    type: 'array',
   })
   @ValidateNested({ each: true })
   @Type(() => CreateMetaOptionsDto)
