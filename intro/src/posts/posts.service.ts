@@ -24,7 +24,11 @@ export class PostsService {
    * @returns Posts promise
    */
   async findAll() {
-    return await this.postsRepository.find({});
+    return await this.postsRepository.find({
+      relations: {
+        metaOptions: true,
+      },
+    });
   }
 
   findAllPostsByUserId(uid: string) {
