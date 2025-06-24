@@ -68,17 +68,8 @@ export class PostsService {
    * @param pid Post ID
    */
   async delete(pid: string) {
-    // Find the post
-    const post = await this.postsRepository.findOneBy({ id: pid });
-
-    // Handle exception
-    if (!post) {
-      console.log('No post found!');
-      return;
-    }
-
     // Delete the post
-    await this.postsRepository.delete(post.id);
+    await this.postsRepository.delete(pid);
 
     // Return deleted post or confirmation
     return {
