@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
+  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -57,5 +59,17 @@ export class PostsController {
     @Body() patchPostDto: PatchPostDto,
   ): any {
     return { ...patchPostDto, id };
+  }
+
+  @ApiOperation({
+    summary: 'Deletes a blog post',
+  })
+  @ApiResponse({
+    description: 'You get a 200 response if the post is deleted successfully',
+    status: 200,
+  })
+  @Delete(':pid')
+  deletePost(@Param('pid', ParseUUIDPipe) pid: string): any {
+    return this.postsService.delete(pid);
   }
 }
