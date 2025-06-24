@@ -1,5 +1,12 @@
 import { MetaOption } from 'src/meta-options/entities/meta-option.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { PostType, Status } from '../types/types';
 
 @Entity()
@@ -66,4 +73,7 @@ export class Post {
     cascade: true,
   })
   metaOptions?: MetaOption;
+
+  @ManyToOne(() => User, (user) => user.posts)
+  author: User;
 }
