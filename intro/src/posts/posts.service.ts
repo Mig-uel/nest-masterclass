@@ -19,8 +19,12 @@ export class PostsService {
     private readonly postsRepository: Repository<P>,
   ) {}
 
-  findAll() {
-    return [{}];
+  /**
+   * Method to get all posts
+   * @returns Posts promise
+   */
+  async findAll() {
+    return await this.postsRepository.find({});
   }
 
   findAllPostsByUserId(uid: string) {
