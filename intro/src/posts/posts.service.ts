@@ -62,4 +62,22 @@ export class PostsService {
     // Return the post
     return this.postsRepository.save(post);
   }
+
+  /**
+   * Method for deleting a post
+   * @param pid Post ID
+   */
+  async delete(pid: string) {
+    // Find the post
+    const post = await this.postsRepository.findOneBy({ id: pid });
+
+    // Handle exception
+    if (!post) {
+      console.log('No post found!');
+      return;
+    }
+
+    // Delete and return deleted post or confirmation
+    return await this.postsRepository.delete(post.id);
+  }
 }
