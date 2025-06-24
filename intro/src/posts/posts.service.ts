@@ -31,23 +31,12 @@ export class PostsService {
     });
   }
 
-  findAllPostsByUserId(uid: string) {
-    const user = this.usersService.findOneById(uid);
+  async findAllPostsByUserId(id: string) {
+    const user = await this.usersService.findOneById(id);
 
     if (!user) return { message: 'No user found!' };
 
-    return [
-      {
-        user,
-        title: 'First Post',
-        content: 'This is the content of the first post.',
-      },
-      {
-        user,
-        title: 'Second Post',
-        content: 'This is the content of the second post.',
-      },
-    ];
+    return user.posts;
   }
 
   /**
@@ -56,11 +45,23 @@ export class PostsService {
    */
   @Post()
   async create(createPostDto: CreatePostDto) {
+    // Find author from database
+    const author = await this.usersService.findOneById(createPostDto.authorId);
+
+    // Handle exception
+    if (!author) {
+      console.log('No user found!');
+      return;
+    }
+
     // Create post
-    const post = this.postsRepository.create(createPostDto);
+    const post = this.postsRepository.create({
+      ...createPostDto,
+      author,
+    });
 
     // Return the post
-    return this.postsRepository.save(post);
+    return await this.postsRepository.save(post);
   }
 
   /**
