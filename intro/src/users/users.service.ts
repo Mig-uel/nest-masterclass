@@ -61,11 +61,7 @@ export class UsersService {
   /**
    * The method to find a single user by ID
    */
-  findOneById(id: string) {
-    return {
-      id,
-      firstName: 'Alice',
-      email: 'alice@email.com',
-    };
+  async findOneById(id: string) {
+    return await this.usersRepository.findOneBy({ id });
   }
 }
