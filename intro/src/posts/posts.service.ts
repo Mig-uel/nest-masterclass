@@ -77,7 +77,12 @@ export class PostsService {
       return;
     }
 
-    // Delete and return deleted post or confirmation
-    return await this.postsRepository.delete(post.id);
+    // Delete the post
+    await this.postsRepository.delete(post.id);
+
+    // Return deleted post or confirmation
+    return {
+      deleted: true,
+    };
   }
 }
