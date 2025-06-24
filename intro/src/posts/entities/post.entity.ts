@@ -68,7 +68,7 @@ export class Post {
   // })
   // tags?: string[];
 
-  @OneToOne(() => MetaOption, {
+  @OneToOne(() => MetaOption, (metaOptions) => metaOptions.post, {
     cascade: true,
     onDelete: 'CASCADE',
   })
