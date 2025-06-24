@@ -1,11 +1,5 @@
 import { MetaOption } from 'src/meta-options/entities/meta-option.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { PostType, Status } from '../types/types';
 
 @Entity()
@@ -70,8 +64,6 @@ export class Post {
 
   @OneToOne(() => MetaOption, (metaOptions) => metaOptions.post, {
     cascade: true,
-    onDelete: 'CASCADE',
   })
-  @JoinColumn()
   metaOptions?: MetaOption;
 }
