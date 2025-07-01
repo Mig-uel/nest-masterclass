@@ -31,6 +31,11 @@ export class PostsService {
     });
   }
 
+  /**
+   * Method to find all posts by a specific user
+   * @param id
+   * @returns
+   */
   async findAllPostsByUserId(id: string) {
     const user = await this.usersService.findOneById(id);
 
