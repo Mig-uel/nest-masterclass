@@ -19,4 +19,11 @@ export class TagsService {
 
     return await this.tagsRepository.save(tag);
   }
+
+  /**
+   * Method to find all tags
+   */
+  async findAllTags() {
+    return await this.tagsRepository.find({});
+  }
 }
