@@ -1,6 +1,7 @@
 import { Injectable, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import type { Repository } from 'typeorm';
+import { TagsService } from '../tags/tags.service';
 import { UsersService } from './../users/users.service';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { Post as P } from './entities/post.entity';
@@ -8,7 +9,8 @@ import { Post as P } from './entities/post.entity';
 @Injectable()
 export class PostsService {
   /**
-   * Inject Users Service, Meta Options Service and Posts Repository
+   * Inject Users Service, Meta Options Service, Tags Service,
+   * and Posts Repository
    * @param usersService
    * @param metaOptionsService
    * @param postsRepository
@@ -17,6 +19,7 @@ export class PostsService {
     private readonly usersService: UsersService,
     @InjectRepository(P)
     private readonly postsRepository: Repository<P>,
+    private readonly tagsService: TagsService,
   ) {}
 
   /**
@@ -54,6 +57,11 @@ export class PostsService {
     // Find author from database
     const author = await this.usersService.findOneById(createPostDto.authorId);
 
+    // Finds tags
+    const tags = await this.tagsService.findMultipleTags(
+      createPostDto.tags || [],
+    );
+
     // Handle exception
     if (!author) {
       console.log('No user found!');
@@ -64,6 +72,7 @@ export class PostsService {
     const post = this.postsRepository.create({
       ...createPostDto,
       author,
+      tags,
     });
 
     // Return the post
