@@ -86,13 +86,13 @@ export class CreatePostDto {
   publishOn?: Date;
 
   @ApiPropertyOptional({
-    description: 'Array of tags passed as string values',
-    example: ['nestjs', 'typescript'],
+    description: 'Array of tag IDs passed as UUID string values',
+    example: [
+      '123e4567-e89b-12d3-a456-426614174000',
+      '223e4567-e89b-12d3-a456-426614174001',
+    ],
   })
-  @MinLength(3, { each: true })
-  @IsString({
-    each: true,
-  })
+  @IsUUID('all', { each: true })
   @ArrayNotEmpty()
   @IsOptional()
   tags?: string[];
