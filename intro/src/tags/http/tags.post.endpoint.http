@@ -6,7 +6,7 @@ POST http://localhost:3000/tags
 Content-Type: application/json
 
 {
-  "name": "example-tag",
-  "description": "This is an example tag for demonstration purposes.",
-  "slug": "example-tag-slug"
+  "name": "javascript",
+  "description": "This is a tag for JavaScript-related resources.",
+  "slug": "javascript"
 }
