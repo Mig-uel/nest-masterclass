@@ -11,5 +11,8 @@ Content-Type: application/json
   "metaOptions": {
     "metaValue": "{\"sidebarEnabled\": false, \"theme\": \"light\"}"
   },
-  "authorId": ""
+  "authorId": "",
+  "tags": [
+    ""
+  ]
 }
