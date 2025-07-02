@@ -27,6 +27,7 @@ export class PostsService {
     return await this.postsRepository.find({
       relations: {
         metaOptions: true,
+        author: true,
       },
     });
   }
