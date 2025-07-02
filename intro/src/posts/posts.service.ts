@@ -119,7 +119,7 @@ export class PostsService {
       post.publishOn = patchPostDto.publishOn ?? post.publishOn;
 
       // Assign the new tags
-      post.tags = tags;
+      post.tags = tags.length > 0 ? tags : post.tags;
 
       // Save the post and return it
       return await this.postsRepository.save(post);
