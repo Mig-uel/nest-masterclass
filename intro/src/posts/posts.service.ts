@@ -4,6 +4,7 @@ import type { Repository } from 'typeorm';
 import { TagsService } from '../tags/tags.service';
 import { UsersService } from './../users/users.service';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { PatchPostDto } from './dtos/patch-post.dto';
 import { Post as P } from './entities/post.entity';
 
 @Injectable()
@@ -92,5 +93,38 @@ export class PostsService {
     return {
       deleted: true,
     };
+  }
+
+  async update(id: string, patchPostDto: PatchPostDto) {
+    try {
+      // Find the tags
+      const tags = await this.tagsService.findMultipleTags(
+        patchPostDto.tags || [],
+      );
+
+      // Find the post
+      const post = await this.postsRepository.findOneBy({ id });
+
+      // Handle exception
+      if (!post) return;
+
+      // Update the properties
+      post.title = patchPostDto.title ?? post.title;
+      post.content = patchPostDto.content ?? post.content;
+      post.status = patchPostDto.status ?? post.status;
+      post.postType = patchPostDto.postType ?? post.postType;
+      post.slug = patchPostDto.slug ?? post.slug;
+      post.featuredImageUrl =
+        patchPostDto.featuredImageUrl ?? post.featuredImageUrl;
+      post.publishOn = patchPostDto.publishOn ?? post.publishOn;
+
+      // Assign the new tags
+      post.tags = tags;
+
+      // Save the post and return it
+      return await this.postsRepository.save(post);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
