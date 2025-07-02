@@ -1,0 +1,12 @@
+# Create Tags
+# This endpoint allows you to create new tags for your resources. You can specify multiple tags in a single request.
+# POST /tags
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+  "name": "example-tag",
+  "description": "This is an example tag for demonstration purposes.",
+  "slug": "example-tag-slug"
+}
