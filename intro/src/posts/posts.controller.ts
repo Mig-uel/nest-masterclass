@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   ParseUUIDPipe,
   Patch,
   Post,
@@ -55,10 +54,10 @@ export class PostsController {
   })
   @Patch(':id')
   updatePost(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() patchPostDto: PatchPostDto,
   ): any {
-    return { ...patchPostDto, id };
+    return this.postsService.update(id, patchPostDto);
   }
 
   @ApiOperation({
