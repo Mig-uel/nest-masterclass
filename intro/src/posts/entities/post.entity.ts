@@ -3,11 +3,14 @@ import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PostType, Status } from '../types/types';
+import { Tag } from './../../tags/entities/tag.entity';
 
 @Entity()
 export class Post {
@@ -63,12 +66,6 @@ export class Post {
   })
   publishOn?: Date;
 
-  // @Column({
-  //   nullable: true,
-  //   type: 'array',
-  // })
-  // tags?: string[];
-
   @OneToOne(() => MetaOption, (metaOptions) => metaOptions.post, {
     cascade: true,
   })
@@ -76,4 +73,8 @@ export class Post {
 
   @ManyToOne(() => User, (user) => user.posts)
   author: User;
+
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags?: Tag[];
 }
