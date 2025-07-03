@@ -86,13 +86,20 @@ export class PostsService {
    * @param pid Post ID
    */
   async delete(pid: string) {
-    // Delete the post
-    await this.postsRepository.delete(pid);
+    try {
+      // Delete the post
+      await this.postsRepository.delete(pid);
 
-    // Return deleted post or confirmation
-    return {
-      deleted: true,
-    };
+      // Return deleted post or confirmation
+      return {
+        deleted: true,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        deleted: false,
+      };
+    }
   }
 
   /**
