@@ -630,3 +630,13 @@ Relational databases are widely used for several reasons:
 - **Avoid Data Duplication**: By using relationships, you can avoid duplicating data across multiple tables, which helps maintain data integrity and reduces storage requirements.
 - **Accurate Data**: Relational databases enforce data integrity through constraints and relationships, ensuring that the data remains accurate and consistent.
 - **Flexibility**: Relational databases allow you to model complex data structures and relationships, making it easier to represent real-world scenarios.
+
+## Environments
+
+### Intro to Environments
+
+Environments in software development refer to the different configurations and settings that an application can run in. They allow developers to define specific behaviors, features, and configurations based on the environment in which the application is deployed.
+
+In NestJS, environments are typically defined using environment variables, which can be set in a `.env` file or through the system's environment variables. These variables can be used to configure various aspects of the application, such as database connections, API keys, and feature flags.
+
+The whole point of environments is to allow you to have different set of environments for different stages of development, such as development, testing, staging, and production. Each environment can have its own configuration, allowing you to test and deploy your application in a controlled manner.
