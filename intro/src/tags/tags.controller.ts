@@ -28,4 +28,9 @@ export class TagsController {
   delete(@Param('id', ParseUUIDPipe) id: string) {
     return this.tagsService.delete(id);
   }
+
+  @Delete('/soft-delete/:id')
+  softDelete(@Param('id', ParseUUIDPipe) id: string) {
+    return this.tagsService.softDelete(id);
+  }
 }
