@@ -6,7 +6,7 @@ POST http://localhost:3000/tags
 Content-Type: application/json
 
 {
-  "name": "javascript",
-  "description": "This is a tag for JavaScript-related resources.",
-  "slug": "javascript"
+  "name": "typescript",
+  "description": "This is a tag for TypeScript-related resources.",
+  "slug": "typescript"
 }
