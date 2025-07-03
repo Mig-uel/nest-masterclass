@@ -95,6 +95,12 @@ export class PostsService {
     };
   }
 
+  /**
+   * Method to update a post
+   * @param id
+   * @param patchPostDto
+   * @returns
+   */
   async update(id: string, patchPostDto: PatchPostDto) {
     try {
       // Find the tags
