@@ -59,4 +59,24 @@ export class TagsService {
       };
     }
   }
+
+  /**
+   * Method to soft delete a tag
+   * @param id
+   * @returns
+   */
+  async softDelete(id: string) {
+    try {
+      await this.tagsRepository.softDelete(id);
+
+      return {
+        deleted: true,
+      };
+    } catch (error) {
+      return {
+        deleted: false,
+        error: (error as Error).message,
+      };
+    }
+  }
 }
