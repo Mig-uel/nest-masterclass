@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
+import type { ConfigType } from '@nestjs/config';
+import ProfileConfig from './config/profile.config';
 import { CreateUserDto } from './dtos/create-user.dto';
 
 // Repo
@@ -17,7 +18,8 @@ export class UsersService {
    */
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
-    private readonly configService: ConfigService,
+    @Inject(ProfileConfig.KEY)
+    private readonly profileConfig: ConfigType<typeof ProfileConfig>,
   ) {}
 
   /**
@@ -51,9 +53,8 @@ export class UsersService {
   findAll(limit: number, page: number) {
     console.log('Limit:', limit, 'Page:', page);
 
-    // Using config service to access env vars
-    const PG_HOST = this.configService.get<string>('PG_HOST');
-    console.log(PG_HOST);
+    // Accessing config only accessible to Users module
+    console.log(this.profileConfig.apiKey);
 
     return [
       { firstName: 'Alice', email: 'alice@example.com' },
