@@ -4,11 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { appConfig } from './config/app.config';
+import AppConfig from './config/app.config';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { PostsModule } from './posts/posts.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
+import DatabaseConfig from './config/database.config';
 
 const ENV = process.env.NODE_ENV;
 
@@ -18,7 +19,7 @@ const ENV = process.env.NODE_ENV;
       isGlobal: true,
       // envFilePath: ['.env.development'],
       envFilePath: !ENV ? '.env' : `.env.${ENV}`,
-      load: [appConfig],
+      load: [AppConfig, DatabaseConfig],
     }),
     UsersModule,
     PostsModule,
