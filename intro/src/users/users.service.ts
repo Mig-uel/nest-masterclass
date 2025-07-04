@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from './dtos/create-user.dto';
 
 // Repo
@@ -12,10 +13,11 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UsersService {
   /**
-   * Injects User Repository
+   * Injects User Repository and Config Service
    */
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
+    private readonly configService: ConfigService,
   ) {}
 
   /**
@@ -47,7 +49,11 @@ export class UsersService {
    * The method to find all Users from the users table
    */
   findAll(limit: number, page: number) {
-    console.log(limit, page);
+    console.log('Limit:', limit, 'Page:', page);
+
+    // Using config service to access env vars
+    const PG_HOST = this.configService.get<string>('PG_HOST');
+    console.log(PG_HOST);
 
     return [
       { firstName: 'Alice', email: 'alice@example.com' },
