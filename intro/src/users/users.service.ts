@@ -26,7 +26,7 @@ export class UsersService {
    * Create User
    * @param createUserDto CreateUserDto
    */
-  async createUser(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     // Check if user email exists
     const existingUser = await this.usersRepository.find({
       where: {

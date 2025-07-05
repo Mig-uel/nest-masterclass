@@ -71,7 +71,7 @@ export class UsersController {
   ) {
     console.log(ip);
 
-    return this.usersService.createUser(createUserDto);
+    return this.usersService.create(createUserDto);
   }
 
   @Patch()
