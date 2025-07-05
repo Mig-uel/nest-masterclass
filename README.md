@@ -640,3 +640,65 @@ Environments in software development refer to the different configurations and s
 In NestJS, environments are typically defined using environment variables, which can be set in a `.env` file or through the system's environment variables. These variables can be used to configure various aspects of the application, such as database connections, API keys, and feature flags.
 
 The whole point of environments is to allow you to have different set of environments for different stages of development, such as development, testing, staging, and production. Each environment can have its own configuration, allowing you to test and deploy your application in a controlled manner.
+
+## Exception Handling
+
+## Intro to Exception Handling
+
+Exception handling is a crucial aspect of software development that allows developers to gracefully handle errors and unexpected situations in their applications. In NestJS, exception handling is built into the framework, providing a consistent way to manage errors and return appropriate responses to clients.
+
+When an error occurs in your application, it can disrupt the normal flow of execution and lead to unexpected behavior. Exception handling allows you to catch these errors, log them, and return meaningful error messages to the client without crashing the application.
+
+We have previously discussed how there is a layer of `Filter` boundary that surrounds `Guards`, `Interceptors`, `Pipes`, and `Controllers`. This layer is responsible for handling exceptions and errors that occur during the request-response lifecycle.
+
+When an exception occurs, NestJS automatically catches it and passes it to the appropriate exception filter. The exception filter can then handle the exception, log it, and return a proper error response to the client.
+
+If any exception occurs within the `Filter` boundary, NestJS will automatically handle the exception and return a proper error response to the client. This allows you to centralize error handling and ensure that your application responds consistently to errors.
+
+### Built-in HTTP Exceptions
+
+NestJS provides several built-in HTTP exceptions that you can use to handle common error scenarios. These exceptions are subclasses of the `HttpException` class and can be thrown in your controllers or services to indicate specific error conditions.
+
+Some of the most commonly used built-in HTTP exceptions include:
+
+- `BadRequestException`: Indicates that the request is invalid or malformed.
+- `UnauthorizedException`: Indicates that the request requires authentication or the provided credentials are invalid.
+- `NotFoundException`: Indicates that the requested resource could not be found.
+- `ForbiddenException`: Indicates that the client does not have permission to access the requested resource.
+- `RequestTimeoutException`: Indicates that the request timed out.
+- `ConflictException`: Indicates that the request could not be completed due to a conflict with the current state of the resource.
+- `GoneException`: Indicates that the requested resource is no longer available.
+- `ImATeapotException`: Indicates that the server is a teapot and cannot brew coffee (a humorous exception).
+- and many more...
+
+You can throw these exceptions in your controllers or services to indicate specific error conditions. When an exception is thrown, NestJS automatically catches it and returns the appropriate HTTP response to the client.
+
+### Handle Exceptions in Services
+
+In NestJS, you can handle exceptions in services by using the `try-catch` block. This allows you to catch specific exceptions and handle them gracefully, returning appropriate responses or logging the errors.
+
+```typescript
+import { Injectable } from '@nestjs/common'
+import { BadRequestException } from '@nestjs/common'
+
+@Injectable()
+export class AppService {
+  async findUser(id: string) {
+    try {
+      // Simulate a user lookup
+      const user = await this.userRepository.findOne(id)
+      if (!user) {
+        throw new NotFoundException('User not found')
+      }
+      return user
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error
+      }
+      throw new BadRequestException('Invalid user ID')
+    }
+  }
+}
+```
+
+In this example, we are using a `try-catch` block to handle exceptions that may occur during the user lookup. If the user is not found, we throw a `NotFoundException`, which will be caught by NestJS and returned as an HTTP response. If any other error occurs, we throw a `BadRequestException` to indicate that the request was invalid.
