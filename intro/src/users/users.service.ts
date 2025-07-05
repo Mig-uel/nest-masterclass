@@ -2,6 +2,7 @@ import {
   ConflictException,
   Inject,
   Injectable,
+  NotFoundException,
   RequestTimeoutException,
 } from '@nestjs/common';
 import type { ConfigType } from '@nestjs/config';
@@ -78,6 +79,18 @@ export class UsersService {
    * The method to find a single user by ID
    */
   async findOneById(id: string) {
-    return await this.usersRepository.findOneBy({ id });
+    try {
+      const user = await this.usersRepository.findOneBy({ id });
+
+      if (!user) throw new NotFoundException(`User with ID #${id} not found`);
+
+      return user;
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try again later',
+      );
+    }
   }
 }
