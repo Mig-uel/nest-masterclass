@@ -643,7 +643,7 @@ The whole point of environments is to allow you to have different set of environ
 
 ## Exception Handling
 
-## Intro to Exception Handling
+### Intro to Exception Handling
 
 Exception handling is a crucial aspect of software development that allows developers to gracefully handle errors and unexpected situations in their applications. In NestJS, exception handling is built into the framework, providing a consistent way to manage errors and return appropriate responses to clients.
 
@@ -702,3 +702,41 @@ export class AppService {
 ```
 
 In this example, we are using a `try-catch` block to handle exceptions that may occur during the user lookup. If the user is not found, we throw a `NotFoundException`, which will be caught by NestJS and returned as an HTTP response. If any other error occurs, we throw a `BadRequestException` to indicate that the request was invalid.
+
+### Identifying Points of Failure
+
+Identifying points of failure in your application is crucial for effective exception handling. By understanding where errors are likely to occur, you can implement appropriate error handling strategies and ensure that your application remains robust and resilient.
+
+Some common points of failure in a NestJS application include:
+
+- **Database Operations**: Errors can occur when interacting with the database, such as connection issues, query errors, or data validation failures.
+- **External API Calls**: When making requests to external APIs, you may encounter network errors, timeouts, or unexpected responses.
+- **User Input Validation**: Invalid user input can lead to errors when processing requests, such as missing required fields or incorrect data formats.
+- **Business Logic Errors**: Errors can occur in the application logic, such as invalid state transitions, incorrect calculations, or unexpected conditions.
+- **File Operations**: Errors can occur when reading or writing files, such as file not found, permission denied, or disk space issues.
+- **Configuration Errors**: Issues with configuration files or environment variables can lead to errors when starting the application or during runtime.
+- **Third-party Library Errors**: Errors can occur when using third-party libraries or dependencies, such as version incompatibilities or unexpected behavior.
+
+#### Querying a Database
+
+When querying a database, you may encounter various errors, such as connection issues, query syntax errors, or data validation failures. It is important to handle these errors gracefully and return appropriate responses to the client.
+
+Interacting with a database like creating, deleting, querying, or updating data can be a point of failure in your application. It's always a good practice to handle exceptions that may occur during database operations and return appropriate error responses to the client.
+
+#### Model Constraints in a Database
+
+Model constraints in a database refer to the rules and restrictions that are applied to the data stored in the database. These constraints help ensure data integrity and consistency by enforcing specific conditions on the data.
+
+Some common types of model constraints include:
+
+- **Primary Key**: A unique identifier for each record in a table. It ensures that no two records can have the same primary key value.
+- **Foreign Key**: A reference to a primary key in another table. It establishes a relationship between two tables and ensures that the referenced record exists.
+- **Unique Constraint**: Ensures that a specific column or combination of columns has unique values across all records in the table.
+- **Not Null Constraint**: Ensures that a specific column cannot have a null value. It enforces that every record must have a value for that column.
+- **Check Constraint**: Enforces a specific condition on the values in a column. It allows you to define custom validation rules for the data.
+
+#### Interacting with External APIs
+
+When interacting with external APIs, you may encounter various errors, such as network issues, timeouts, or unexpected responses. It is important to handle these errors gracefully and return appropriate responses to the client.
+
+When making requests to external APIs, you should always handle exceptions that may occur during the request. This includes network errors, timeouts, and unexpected responses from the API.
