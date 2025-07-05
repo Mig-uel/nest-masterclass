@@ -63,7 +63,6 @@ export class UsersService {
   findAll(limit: number, page: number) {
     try {
       console.log('Limit:', limit, 'Page:', page);
-
       // Accessing config only accessible to Users module
       console.log(this.profileConfig.apiKey);
 
