@@ -61,18 +61,28 @@ export class UsersService {
    * The method to find all Users from the users table
    */
   findAll(limit: number, page: number) {
-    console.log('Limit:', limit, 'Page:', page);
+    try {
+      console.log('Limit:', limit, 'Page:', page);
 
-    // Accessing config only accessible to Users module
-    console.log(this.profileConfig.apiKey);
+      // Accessing config only accessible to Users module
+      console.log(this.profileConfig.apiKey);
 
-    return [
-      { firstName: 'Alice', email: 'alice@example.com' },
-      { firstName: 'Bob', email: 'bob@example.com' },
-      { firstName: 'Charlie', email: 'charlie@example.com' },
-      { firstName: 'Diana', email: 'diana@example.com' },
-      { firstName: 'Eve', email: 'eve@example.com' },
-    ];
+      return this.usersRepository.find({
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          posts: true,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try again later',
+      );
+    }
   }
 
   /**
