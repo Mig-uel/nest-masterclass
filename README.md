@@ -767,3 +767,17 @@ Transactions are used in NestJS for several reasons:
 - **Atomicity**: Transactions allow you to group multiple operations into a single unit of work. This means that either all operations are successfully completed, or none of them are applied, ensuring that the database remains in a consistent state.
 - **Consistency**: Transactions help maintain the consistency of the database by ensuring that all operations within a transaction are applied together. This prevents situations where some operations succeed while others fail, leading to inconsistent data.
 - **Isolation**: Transactions provide isolation between concurrent operations, ensuring that the changes made by one transaction are not visible to other transactions until the transaction is committed. This prevents issues such as dirty reads and ensures that each transaction operates on a consistent view of the data.
+
+### QueryRunner for TypeORM Transactions
+
+In NestJS, you can use the `QueryRunner` class from TypeORM to manage transactions. The `QueryRunner` allows you to create a transaction, execute multiple operations within that transaction, and commit or roll back the transaction as needed.
+
+We use an instance of `QueryRunner` to perform operations within a transaction. The `QueryRunner` provides methods for starting, committing, and rolling back transactions, as well as executing queries and managing the database connection.
+
+What `QueryRunner` does is that it returns a single connection from a pool of connections available in the database.
+
+A connection pool is a cache of database connections that can be reused, improving the performance of database operations by reducing the overhead of establishing new connections. When a connection is no longer needed, it is returned to the pool instead of being closed, allowing it to be reused for future requests.
+
+The `QueryRunner` gives you a connection from this pool, which you can use to perform operations within a transaction. This allows you to execute multiple queries and manage the transaction lifecycle without having to create a new connection for each operation.
+
+While performing transactions, you are not using multiple connections.
