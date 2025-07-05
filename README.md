@@ -740,3 +740,30 @@ Some common types of model constraints include:
 When interacting with external APIs, you may encounter various errors, such as network issues, timeouts, or unexpected responses. It is important to handle these errors gracefully and return appropriate responses to the client.
 
 When making requests to external APIs, you should always handle exceptions that may occur during the request. This includes network errors, timeouts, and unexpected responses from the API.
+
+## Transactions
+
+### Understanding Transactions
+
+Transactions are a fundamental concept in database management that allow you to group multiple operations into a single unit of work. A transaction ensures that either all operations are successfully completed, or none of them are applied, maintaining the integrity of the data.
+
+In NestJS, transactions are typically used when performing multiple database operations that need to be treated as a single atomic operation. This is especially important in scenarios where you need to ensure data consistency and integrity, such as when creating or updating related records.
+
+A transaction can be thought of as one complete set of CRUD operations on a database. For example, when creating a new user and their associated profile, you want to ensure that both operations succeed or fail together. If one operation fails, the entire transaction should be rolled back to maintain data integrity.
+
+If one of the operations in a transaction fails, it might lead to discrepancies in the data, such as having a user created without a profile or vice versa. Transactions help prevent such inconsistencies by ensuring that either all operations are applied or none are.
+
+### Example of a Transaction
+
+Let's assume a user requests to transfer money from one account to another. This operation involves two steps: deducting the amount from the sender's account and adding it to the receiver's account. If either step fails, the entire transaction should be rolled back to maintain data integrity.
+
+First, we check if the sender has sufficient balance. If they do, we proceed with the transaction. If any step fails, we roll back the transaction to ensure that no money is lost or incorrectly transferred.
+
+### Why Use Transactions?
+
+Transactions are used in NestJS for several reasons:
+
+- **Data Integrity**: Transactions ensure that the data remains consistent and valid, even in the event of errors or failures. If any operation within a transaction fails, the entire transaction is rolled back, preventing partial updates to the database.
+- **Atomicity**: Transactions allow you to group multiple operations into a single unit of work. This means that either all operations are successfully completed, or none of them are applied, ensuring that the database remains in a consistent state.
+- **Consistency**: Transactions help maintain the consistency of the database by ensuring that all operations within a transaction are applied together. This prevents situations where some operations succeed while others fail, leading to inconsistent data.
+- **Isolation**: Transactions provide isolation between concurrent operations, ensuring that the changes made by one transaction are not visible to other transactions until the transaction is committed. This prevents issues such as dirty reads and ensures that each transaction operates on a consistent view of the data.
