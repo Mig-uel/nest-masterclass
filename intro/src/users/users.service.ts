@@ -1,4 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import type { ConfigType } from '@nestjs/config';
 import ProfileConfig from './config/profile.config';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -23,28 +28,32 @@ export class UsersService {
   ) {}
 
   /**
-   * Create User
+   * Method to create new user
    * @param createUserDto CreateUserDto
    */
   async create(createUserDto: CreateUserDto) {
-    // Check if user email exists
-    const existingUser = await this.usersRepository.find({
-      where: {
-        email: createUserDto.email,
-      },
-    });
+    try {
+      // Check if user email exists
+      const existingUser = await this.usersRepository.findOne({
+        where: {
+          email: createUserDto.email,
+        },
+      });
 
-    // Handle exception
-    if (existingUser.length) {
-      // Handle exception logic
-      return;
+      if (existingUser)
+        throw new ConflictException('User with this email already exists');
+
+      // Create new user
+      const newUser = this.usersRepository.create(createUserDto);
+
+      return await this.usersRepository.save(newUser);
+    } catch (error) {
+      if (error instanceof ConflictException) throw error;
+
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try again later',
+      );
     }
-
-    // Create new user
-    const newUser = this.usersRepository.create(createUserDto);
-
-    // Return the new user
-    return await this.usersRepository.save(newUser);
   }
 
   /**
