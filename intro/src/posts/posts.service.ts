@@ -1,4 +1,10 @@
-import { Injectable, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  Post,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import type { Repository } from 'typeorm';
 import { TagsService } from '../tags/tags.service';
@@ -115,11 +121,19 @@ export class PostsService {
         patchPostDto.tags || [],
       );
 
+      if (
+        patchPostDto.tags?.length &&
+        tags.length !== patchPostDto.tags?.length
+      ) {
+        throw new BadRequestException(
+          'One or more invalid tags were passed. Please try again',
+        );
+      }
+
       // Find the post
       const post = await this.postsRepository.findOneBy({ id });
 
-      // Handle exception
-      if (!post) return;
+      if (!post) throw new NotFoundException(`Post ${id} not found`);
 
       // Update the properties
       post.title = patchPostDto.title ?? post.title;
@@ -131,13 +145,20 @@ export class PostsService {
         patchPostDto.featuredImageUrl ?? post.featuredImageUrl;
       post.publishOn = patchPostDto.publishOn ?? post.publishOn;
 
+      // TODO => fix tag updating logic
       // Assign the new tags
       post.tags = tags.length > 0 ? tags : post.tags;
 
       // Save the post and return it
       return await this.postsRepository.save(post);
     } catch (error) {
-      console.log(error);
+      if (error instanceof NotFoundException) throw error;
+
+      if (error instanceof BadRequestException) throw error;
+
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try again later',
+      );
     }
   }
 }
