@@ -6,7 +6,6 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import type { ConfigType } from '@nestjs/config';
-import { DataSource } from 'typeorm';
 import ProfileConfig from './config/profile.config';
 import { CreateUserDto } from './dtos/create-user.dto';
 
@@ -27,7 +26,6 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     @Inject(ProfileConfig.KEY)
     private readonly profileConfig: ConfigType<typeof ProfileConfig>,
-    private readonly dataSource: DataSource,
   ) {}
 
   /**
@@ -103,45 +101,6 @@ export class UsersService {
       throw new RequestTimeoutException(
         'Unable to process your request at the moment, please try again later',
       );
-    }
-  }
-
-  /**
-   * Method to create many users
-   * @param createUsersDto
-   */
-  async createMany(createUsersDto: CreateUserDto[]) {
-    // Create a QueryRunner instance
-    const queryRunner = this.dataSource.createQueryRunner();
-
-    try {
-      // Store created users
-      const usersCreated: User[] = [];
-
-      // Connect QueryRunner to datasource
-      await queryRunner.connect();
-
-      // Start transaction
-      await queryRunner.startTransaction();
-
-      // Loop through the createUsersDto array
-      for (const user of createUsersDto) {
-        const newUser = queryRunner.manager.create(User, user);
-        const result = await queryRunner.manager.save(newUser);
-
-        usersCreated.push(result);
-      }
-
-      // If successful, commit to the database
-      await queryRunner.commitTransaction();
-    } catch (error) {
-      console.log(error);
-
-      // If unsuccessful, rollback the changes
-      await queryRunner.rollbackTransaction();
-    } finally {
-      // Release the connection, regardless of status
-      await queryRunner.release();
     }
   }
 }
