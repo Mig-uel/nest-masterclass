@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import type { ConfigType } from '@nestjs/config';
 import ProfileConfig from './config/profile.config';
+import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersCreateMany } from './providers/users-create-many';
 
@@ -106,7 +107,7 @@ export class UsersService {
     }
   }
 
-  async createMany(createUsersDto: CreateUserDto[]) {
+  async createMany(createUsersDto: CreateManyUsersDto) {
     return await this.usersCreateMany.createMany(createUsersDto);
   }
 }
