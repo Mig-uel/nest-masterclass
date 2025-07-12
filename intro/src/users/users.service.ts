@@ -8,6 +8,7 @@ import {
 import type { ConfigType } from '@nestjs/config';
 import ProfileConfig from './config/profile.config';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { UsersCreateMany } from './providers/users-create-many';
 
 // Repo
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,12 +21,13 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UsersService {
   /**
-   * Injects User Repository, Config Service, and DataSource
+   * Injects User Repository, Config Service, and UsersCreateMany Provider
    */
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     @Inject(ProfileConfig.KEY)
     private readonly profileConfig: ConfigType<typeof ProfileConfig>,
+    private readonly usersCreateMany: UsersCreateMany,
   ) {}
 
   /**
@@ -102,5 +104,9 @@ export class UsersService {
         'Unable to process your request at the moment, please try again later',
       );
     }
+  }
+
+  async createMany(createUsersDto: CreateUserDto[]) {
+    return await this.usersCreateMany.createMany(createUsersDto);
   }
 }
