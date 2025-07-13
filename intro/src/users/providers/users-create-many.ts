@@ -56,6 +56,8 @@ export class UsersCreateMany {
       });
     }
 
-    return usersCreated;
+    return {
+      users: usersCreated,
+    };
   }
 }
