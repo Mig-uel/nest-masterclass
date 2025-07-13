@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, RequestTimeoutException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 import { User } from '../entities/user.entity';
@@ -36,13 +36,24 @@ export class UsersCreateMany {
       // If successful, commit to the database
       await queryRunner.commitTransaction();
     } catch (error) {
-      console.log(error);
-
       // If unsuccessful, rollback the changes
       await queryRunner.rollbackTransaction();
-    } finally {
+
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try again later',
+        {
+          description: String(error),
+        },
+      );
+    }
+
+    try {
       // Release the connection, regardless of status
       await queryRunner.release();
+    } catch (error) {
+      throw new RequestTimeoutException('Could not release the connection', {
+        description: String(error),
+      });
     }
 
     return usersCreated;
