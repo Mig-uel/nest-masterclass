@@ -10,6 +10,7 @@ import type { Repository } from 'typeorm';
 import { TagsService } from '../tags/tags.service';
 import { UsersService } from './../users/users.service';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { GetPostsDto } from './dtos/get-posts.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
 import { Post as P } from './entities/post.entity';
 
@@ -33,13 +34,17 @@ export class PostsService {
    * Method to get all posts
    * @returns Posts promise
    */
-  async findAll() {
+  async findAll(postQuery: GetPostsDto) {
+    const { limit, page } = postQuery;
+
     return await this.postsRepository.find({
       relations: {
         metaOptions: true,
         author: true,
         tags: true,
       },
+      skip: (page! - 1) * limit!,
+      take: limit,
     });
   }
 
