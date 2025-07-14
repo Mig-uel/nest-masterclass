@@ -62,29 +62,51 @@ export class PostsService {
    */
   @Post()
   async create(createPostDto: CreatePostDto) {
-    // Find author from database
-    const author = await this.usersService.findOneById(createPostDto.authorId);
+    try {
+      // Find author from database
+      const author = await this.usersService.findOneById(
+        createPostDto.authorId,
+      );
 
-    // Finds tags
-    const tags = await this.tagsService.findMultipleTags(
-      createPostDto.tags || [],
-    );
+      // Handle no author
+      if (!author) {
+        console.log('No user found!');
+        return;
+      }
 
-    // Handle exception
-    if (!author) {
-      console.log('No user found!');
-      return;
+      // Find existing slug
+      const existingSlug = await this.postsRepository.findOne({
+        where: {
+          slug: createPostDto.slug,
+        },
+      });
+
+      if (existingSlug)
+        throw new BadRequestException(
+          'The provided slug is not available, please try again',
+        );
+
+      // Finds tags
+      const tags = await this.tagsService.findMultipleTags(
+        createPostDto.tags || [],
+      );
+
+      // Create post
+      const post = this.postsRepository.create({
+        ...createPostDto,
+        author,
+        tags,
+      });
+
+      // Return the post
+      return await this.postsRepository.save(post);
+    } catch (error) {
+      if (error instanceof BadRequestException) throw error;
+
+      throw new BadRequestException(
+        'Unable to process your request at the moment, please try again later',
+      );
     }
-
-    // Create post
-    const post = this.postsRepository.create({
-      ...createPostDto,
-      author,
-      tags,
-    });
-
-    // Return the post
-    return await this.postsRepository.save(post);
   }
 
   /**
