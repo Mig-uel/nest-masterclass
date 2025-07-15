@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
-import type { Repository } from 'typeorm';
+import type { FindOptionsSelect, Repository } from 'typeorm';
 import { PaginationQueryDto } from '../dtos/pagination-query.dto';
 import type { Paginated } from '../interfaces/paginated.interface';
 
@@ -12,12 +12,14 @@ export class PaginationProvider {
   async paginateQuery<T extends Record<string, any>>(
     paginationQuery: PaginationQueryDto,
     repository: Repository<T>,
+    select?: FindOptionsSelect<T>,
   ): Promise<Paginated<T>> {
     const { limit, page } = paginationQuery;
 
     const results = await repository.find({
       skip: (page! - 1) * limit!,
       take: limit,
+      select,
     });
 
     // TODO => implement cleaner url building logic
