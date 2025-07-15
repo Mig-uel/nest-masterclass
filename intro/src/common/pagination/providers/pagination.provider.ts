@@ -12,7 +12,7 @@ export class PaginationProvider {
   async paginateQuery<T extends Record<string, any>>(
     paginationQuery: PaginationQueryDto,
     repository: Repository<T>,
-  ): Promise<Paginated> {
+  ): Promise<Paginated<T>> {
     const { limit, page } = paginationQuery;
 
     const results = await repository.find({
@@ -34,7 +34,7 @@ export class PaginationProvider {
     const previousPage = page === 1 ? page : page! - 1;
 
     // Response
-    const response: Paginated<typeof results> = {
+    const response: Paginated<T> = {
       data: results,
       meta: {
         currentPage: page!,
