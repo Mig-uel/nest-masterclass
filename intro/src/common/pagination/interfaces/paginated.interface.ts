@@ -14,7 +14,7 @@ type Links = {
 };
 
 export interface Paginated<T = any> {
-  data: T[];
+  data: T;
   meta: Meta;
   links: Links;
 }
