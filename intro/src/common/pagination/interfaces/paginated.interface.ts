@@ -13,8 +13,8 @@ type Links = {
   previous: string;
 };
 
-export interface Paginated<T = any> {
-  data: T;
+export interface Paginated<T> {
+  data: T[];
   meta: Meta;
   links: Links;
 }
