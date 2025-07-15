@@ -6,14 +6,20 @@ import { PaginationModule } from 'src/common/pagination/pagination.module';
 import ProfileConfig from './config/profile.config';
 import { User } from './entities/user.entity';
 import { CreateUserProvider } from './providers/create-user.provider';
+import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email';
 import { UsersCreateMany } from './providers/users-create-many';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService, UsersCreateMany, CreateUserProvider],
-  exports: [UsersService],
+  providers: [
+    UsersService,
+    UsersCreateMany,
+    CreateUserProvider,
+    FindOneUserByEmailProvider,
+  ],
+  exports: [UsersService, FindOneUserByEmailProvider],
   imports: [
     TypeOrmModule.forFeature([User]),
     ConfigModule.forFeature(ProfileConfig),
