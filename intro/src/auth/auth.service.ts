@@ -9,11 +9,15 @@ export class AuthService {
   ) {}
 
   /**
-   * Login
+   * Logs in a user by verifying credentials and returns a token and user data.
+   * @param email - The user's email address.
+   * @param password - The user's password.
+   * @param id - The user's unique identifier.
+   * @returns An object containing a token and the user data.
    */
-  login(email: string, password: string, uid: string) {
+  login(email: string, password: string, id: string) {
     // Check if user exists in database
-    const user = this.usersService.findOneById(uid);
+    const user = this.usersService.findOneById(id);
 
     // Login logic
     // Token
