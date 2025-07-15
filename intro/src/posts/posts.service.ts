@@ -6,6 +6,7 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 import type { Repository } from 'typeorm';
 import { TagsService } from '../tags/tags.service';
 import { UsersService } from './../users/users.service';
@@ -28,6 +29,7 @@ export class PostsService {
     @InjectRepository(P)
     private readonly postsRepository: Repository<P>,
     private readonly tagsService: TagsService,
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   /**
@@ -35,17 +37,10 @@ export class PostsService {
    * @returns Posts promise
    */
   async findAll(postQuery: GetPostsDto) {
-    const { limit, page } = postQuery;
-
-    return await this.postsRepository.find({
-      relations: {
-        metaOptions: true,
-        author: true,
-        tags: true,
-      },
-      skip: (page! - 1) * limit!,
-      take: limit,
-    });
+    return this.paginationProvider.paginateQuery(
+      postQuery,
+      this.postsRepository,
+    );
   }
 
   /**
