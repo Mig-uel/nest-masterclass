@@ -781,3 +781,38 @@ A connection pool is a cache of database connections that can be reused, improvi
 The `QueryRunner` gives you a connection from this pool, which you can use to perform operations within a transaction. This allows you to execute multiple queries and manage the transaction lifecycle without having to create a new connection for each operation.
 
 While performing transactions, you are not using multiple connections.
+
+## User Authentication
+
+### Understanding Hashing and Salting
+
+#### What is Hashing?
+
+Storing passwords as plain text is a security risk, as anyone who gains access to the database can see the passwords. Instead, passwords should be hashed before being stored in the database. This way, even if the database is compromised, the actual passwords remain secure.
+
+Hashing is a process of converting data into a fixed-size string of characters, which is typically a hash code. It is a one-way function, meaning that it is not possible to reverse the process and retrieve the original data from the hash code. Hashing is commonly used for securely storing passwords and verifying data integrity.
+
+When a user creates an account or changes their password, the password is hashed using a cryptographic hash function (e.g., SHA-256, bcrypt, Argon2). The resulting hash is then stored in the database instead of the plain text password.
+
+#### Adding Salt to Hashing
+
+Salting is the process of adding a random value (the salt) to the password before hashing it. This helps protect against rainbow table attacks, where attackers use precomputed hash values to crack passwords.
+
+When a user creates an account or changes their password, a unique salt is generated and added to the password before hashing. The salt is then stored alongside the hashed password in the database. When the user attempts to log in, the same salt is used to hash the provided password, and the resulting hash is compared to the stored hash.
+
+This way, even if two users have the same password, their hashed passwords will be different due to the unique salt. This adds an extra layer of security to password storage.
+
+#### Example of Hashing and Salting
+
+```ts
+$2y$10$eImy5z8Z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m
+```
+
+- 2y: This indicates the hashing algorithm used (bcrypt in this case).
+- 10: This is the cost factor, which determines how computationally expensive the hashing process is. A higher cost factor increases security but also increases the time it takes to hash passwords.
+- eImy5z8Z1a2b3c4d5e6f7: This is the salt value that was added to the password before hashing.
+- 8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m: This is the actual hashed password.
+
+#### Comparing Password and Hash
+
+When a user attempts to log in, the provided password is hashed using the same salt and cost factor that were used when the password was originally hashed. The resulting hash is then compared to the stored hash in the database. If the hashes match, the user is authenticated successfully. If they do not match, the authentication fails.
