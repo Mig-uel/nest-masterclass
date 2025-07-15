@@ -1,4 +1,4 @@
-e# POST /auth/sign-in
+# POST /auth/sign-in
 # Description: Sign in a user
 # Request Body: JSON object with email and password
 # Response: 200 OK with the user object and token
