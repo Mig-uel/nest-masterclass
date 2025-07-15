@@ -2,10 +2,10 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  Post,
   RequestTimeoutException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import type { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 import type { Repository } from 'typeorm';
 import { TagsService } from '../tags/tags.service';
@@ -13,7 +13,7 @@ import { UsersService } from './../users/users.service';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
-import { Post as P } from './entities/post.entity';
+import { Post } from './entities/post.entity';
 
 @Injectable()
 export class PostsService {
@@ -27,8 +27,8 @@ export class PostsService {
    */
   constructor(
     private readonly usersService: UsersService,
-    @InjectRepository(P)
-    private readonly postsRepository: Repository<P>,
+    @InjectRepository(Post)
+    private readonly postsRepository: Repository<Post>,
     private readonly tagsService: TagsService,
     private readonly paginationProvider: PaginationProvider,
   ) {}
@@ -37,8 +37,8 @@ export class PostsService {
    * Method to get all posts
    * @returns Posts promise
    */
-  async findAll(postQuery: GetPostsDto) {
-    return this.paginationProvider.paginateQuery(
+  async findAll(postQuery: GetPostsDto): Promise<Paginated<Post>> {
+    return this.paginationProvider.paginateQuery<Post>(
       postQuery,
       this.postsRepository,
     );
@@ -61,7 +61,6 @@ export class PostsService {
    * Method for creating a post
    * @param createPostDto
    */
-  @Post()
   async create(createPostDto: CreatePostDto) {
     try {
       // Find author from database
