@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   Inject,
   Injectable,
   NotFoundException,
@@ -11,6 +10,7 @@ import { PaginationProvider } from 'src/common/pagination/providers/pagination.p
 import ProfileConfig from './config/profile.config';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { CreateUserProvider } from './providers/create-user.provider';
 import { UsersCreateMany } from './providers/users-create-many';
 
 // Repo
@@ -25,7 +25,7 @@ import { User } from './entities/user.entity';
 export class UsersService {
   /**
    * Injects User Repository, Config Service, UsersCreateMany Provider,
-   * and Pagination Provider
+   * Pagination Provider, and Create User Provider
    */
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
@@ -33,6 +33,7 @@ export class UsersService {
     private readonly profileConfig: ConfigType<typeof ProfileConfig>,
     private readonly usersCreateMany: UsersCreateMany,
     private readonly paginationProvider: PaginationProvider,
+    private readonly createUserProvider: CreateUserProvider,
   ) {}
 
   /**
@@ -40,28 +41,7 @@ export class UsersService {
    * @param createUserDto CreateUserDto
    */
   async create(createUserDto: CreateUserDto) {
-    try {
-      // Check if user email exists
-      const existingUser = await this.usersRepository.findOne({
-        where: {
-          email: createUserDto.email,
-        },
-      });
-
-      if (existingUser)
-        throw new ConflictException('User with this email already exists');
-
-      // Create new user
-      const newUser = this.usersRepository.create(createUserDto);
-
-      return await this.usersRepository.save(newUser);
-    } catch (error) {
-      if (error instanceof ConflictException) throw error;
-
-      throw new RequestTimeoutException(
-        'Unable to process your request at the moment, please try again later',
-      );
-    }
+    return this.createUserProvider.create(createUserDto);
   }
 
   /**
