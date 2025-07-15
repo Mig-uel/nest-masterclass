@@ -11,6 +11,7 @@ import ProfileConfig from './config/profile.config';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { CreateUserProvider } from './providers/create-user.provider';
+import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email';
 import { UsersCreateMany } from './providers/users-create-many';
 
 // Repo
@@ -34,6 +35,7 @@ export class UsersService {
     private readonly usersCreateMany: UsersCreateMany,
     private readonly paginationProvider: PaginationProvider,
     private readonly createUserProvider: CreateUserProvider,
+    private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
   ) {}
 
   /**
@@ -89,6 +91,16 @@ export class UsersService {
         'Unable to process your request at the moment, please try again later',
       );
     }
+  }
+
+  /**
+   * Retrieves a user entity by their email address.
+   *
+   * @param email - The email address of the user to find.
+   * @returns A promise that resolves to the user entity if found, or `null` if no user exists with the provided email.
+   */
+  async findOneByEmail(email: string) {
+    return await this.findOneUserByEmailProvider.findOneUserByEmail(email);
   }
 
   async createMany(createUsersDto: CreateManyUsersDto) {
