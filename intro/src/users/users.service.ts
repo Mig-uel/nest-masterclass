@@ -6,6 +6,8 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import type { ConfigType } from '@nestjs/config';
+import { PaginationQueryDto } from 'src/common/pagination/dtos/pagination-query.dto';
+import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 import ProfileConfig from './config/profile.config';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -22,13 +24,15 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UsersService {
   /**
-   * Injects User Repository, Config Service, and UsersCreateMany Provider
+   * Injects User Repository, Config Service, UsersCreateMany Provider,
+   * and Pagination Provider
    */
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     @Inject(ProfileConfig.KEY)
     private readonly profileConfig: ConfigType<typeof ProfileConfig>,
     private readonly usersCreateMany: UsersCreateMany,
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   /**
@@ -63,22 +67,26 @@ export class UsersService {
   /**
    * The method to find all Users from the users table
    */
-  findAll(limit: number, page: number) {
+  findAll(paginationQuery: PaginationQueryDto) {
     try {
-      console.log('Limit:', limit, 'Page:', page);
-
       // Accessing config only accessible to Users module
       console.log(this.profileConfig.apiKey);
 
-      return this.usersRepository.find({
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          posts: true,
-        },
-      });
+      // TODO => fix find logic to handle select
+      // return this.usersRepository.find({
+      //   select: {
+      //     id: true,
+      //     email: true,
+      //     firstName: true,
+      //     lastName: true,
+      //     posts: true,
+      //   },
+      // });
+
+      return this.paginationProvider.paginateQuery(
+        paginationQuery,
+        this.usersRepository,
+      );
     } catch (error) {
       console.log(error);
 
