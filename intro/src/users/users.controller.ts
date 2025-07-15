@@ -26,12 +26,19 @@ export class UsersController {
 
   @Get(':id')
   @ApiOperation({
-    summary: 'Fetches a list of registered users on the application',
+    summary: 'Fetches a registered user on the application',
   })
   @ApiResponse({
     status: 200,
-    description: 'Users fetched successfully based on the query',
+    description: 'User fetched successfully based on the param',
   })
+  getUsers(@Param() getUserParamDto: GetUsersParamDto): Promise<User> {
+    const { id } = getUserParamDto;
+
+    return this.usersService.findOneById(id);
+  }
+
+  @Get()
   @ApiQuery({
     name: 'limit',
     type: 'number',
@@ -46,13 +53,6 @@ export class UsersController {
     description: 'The page number that you want the API to return',
     example: 1,
   })
-  getUsers(@Param() getUserParamDto: GetUsersParamDto): Record<string, any> {
-    const { id } = getUserParamDto;
-
-    return this.usersService.findOneById(id);
-  }
-
-  @Get()
   getAllUsers(
     @Query() paginationQuery: PaginationQueryDto,
   ): Promise<Paginated<User>> {
