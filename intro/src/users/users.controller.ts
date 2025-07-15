@@ -1,21 +1,22 @@
 import {
   Body,
   Controller,
-  DefaultValuePipe,
   Get,
   Headers,
   Ip,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { PaginationQueryDto } from 'src/common/pagination/dtos/pagination-query.dto';
+import type { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
+import type { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -23,7 +24,7 @@ export class UsersController {
   // Inject Users Service
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('{/:id}')
+  @Get(':id')
   @ApiOperation({
     summary: 'Fetches a list of registered users on the application',
   })
@@ -45,20 +46,21 @@ export class UsersController {
     description: 'The page number that you want the API to return',
     example: 1,
   })
-  getUsers(
-    @Param() getUserParamDto: GetUsersParamDto,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-  ): Record<string, any> {
+  getUsers(@Param() getUserParamDto: GetUsersParamDto): Record<string, any> {
     const { id } = getUserParamDto;
 
-    if (!id) return this.usersService.findAll(limit, page);
+    return this.usersService.findOneById(id);
+  }
 
-    return this.usersService.findOneById(id.toString());
+  @Get()
+  getAllUsers(
+    @Query() paginationQuery: PaginationQueryDto,
+  ): Promise<Paginated<User>> {
+    return this.usersService.findAll(paginationQuery);
   }
 
   /**
-   * Post route to create user
+   * Route to create user
    * @param createUserDto
    * @param _
    * @param ip
