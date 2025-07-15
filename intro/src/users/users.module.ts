@@ -19,7 +19,7 @@ import { UsersService } from './users.service';
     CreateUserProvider,
     FindOneUserByEmailProvider,
   ],
-  exports: [UsersService, FindOneUserByEmailProvider],
+  exports: [UsersService],
   imports: [
     TypeOrmModule.forFeature([User]),
     ConfigModule.forFeature(ProfileConfig),
