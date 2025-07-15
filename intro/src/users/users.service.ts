@@ -72,20 +72,16 @@ export class UsersService {
       // Accessing config only accessible to Users module
       console.log(this.profileConfig.apiKey);
 
-      // TODO => fix find logic to handle select
-      // return this.usersRepository.find({
-      //   select: {
-      //     id: true,
-      //     email: true,
-      //     firstName: true,
-      //     lastName: true,
-      //     posts: true,
-      //   },
-      // });
-
       return this.paginationProvider.paginateQuery(
         paginationQuery,
         this.usersRepository,
+        {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          posts: true,
+        },
       );
     } catch (error) {
       console.log(error);
