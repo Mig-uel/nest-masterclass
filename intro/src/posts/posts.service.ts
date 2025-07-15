@@ -19,10 +19,11 @@ import { Post as P } from './entities/post.entity';
 export class PostsService {
   /**
    * Inject Users Service, Meta Options Service, Tags Service,
-   * and Posts Repository
+   * Posts Repository, and PaginationProvider
    * @param usersService
    * @param metaOptionsService
    * @param postsRepository
+   * @param paginationProvider
    */
   constructor(
     private readonly usersService: UsersService,
