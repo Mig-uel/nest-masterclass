@@ -1,14 +1,13 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsOptional, IsUUID } from 'class-validator';
+import { IsUUID } from 'class-validator';
 
 export class GetUsersParamDto {
-  @ApiPropertyOptional({
+  @ApiProperty({
     description: 'Get user with a specific ID',
     example: 1,
   })
   @Type(() => String)
   @IsUUID()
-  @IsOptional()
-  id?: number;
+  id: string;
 }
