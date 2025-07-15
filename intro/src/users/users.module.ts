@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PaginationModule } from 'src/common/pagination/pagination.module';
 import ProfileConfig from './config/profile.config';
 import { User } from './entities/user.entity';
 import { UsersCreateMany } from './providers/users-create-many';
@@ -14,6 +15,7 @@ import { UsersService } from './users.service';
   imports: [
     TypeOrmModule.forFeature([User]),
     ConfigModule.forFeature(ProfileConfig),
+    PaginationModule,
   ],
 })
 export class UsersModule {}
