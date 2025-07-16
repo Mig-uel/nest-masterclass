@@ -816,3 +816,47 @@ $2y$10$eImy5z8Z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3
 #### Comparing Password and Hash
 
 When a user attempts to log in, the provided password is hashed using the same salt and cost factor that were used when the password was originally hashed. The resulting hash is then compared to the stored hash in the database. If the hashes match, the user is authenticated successfully. If they do not match, the authentication fails.
+
+### What are JWTs?
+
+JSON Web Tokens (JWTs) are an open, industry standard (RFC 7519) method for representing claims securely between two parties. They are commonly used for authentication and information exchange in web applications.
+
+JWTs consist of three parts: a header, a payload, and a signature. The header typically contains information about the type of token and the signing algorithm used. The payload contains the claims or data that you want to include in the token, such as user information or permissions. The signature is used to verify the authenticity of the token.
+
+#### How Does JWT Look Like?
+
+A JWT is a compact, URL-safe string that consists of three parts separated by dots (.). Each part is Base64Url encoded.
+
+A typical JWT looks like this:
+
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+```
+
+- The first part (header) contains metadata about the token, such as the signing algorithm and token type.
+
+  - The header is typically a JSON object that is Base64Url encoded.
+  - `{"alg": "HS256", "typ": "JWT"}` is an example of a JWT header.
+
+- The second part (payload) contains the claims or data that you want to include in the token, such as user information or permissions.
+
+  - The payload is also a JSON object that is Base64Url encoded.
+  - `{"sub": "1234567890", "name": "John Doe", "iat": 1516239022}` is an example of a JWT payload.
+
+- The third part (signature) is used to verify the authenticity of the token and ensure that it has not been tampered with. The signature is created by combining the encoded header, encoded payload, and a secret key using a signing algorithm (e.g., HMAC SHA256).
+
+  - The signature is created by taking the Base64Url encoded header and payload, concatenating them with a dot (.), and signing the resulting string using the secret key.
+  - `HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secret)` is an example of how the signature is generated.
+
+### Authentication Process
+
+The authentication process using JWTs typically involves the following steps:
+
+1. **User Login**: The user provides their credentials (e.g., username and password) to the server.
+2. **Token Generation**: If the credentials are valid, the server generates a JWT containing user information and signs it with a secret key. The token is then sent back to the client.
+3. **Token Storage**: The client stores the JWT (usually in local storage or a cookie) for future requests.
+4. **Token Verification**: For subsequent requests, the client includes the JWT in the request headers (usually in the `Authorization` header). The server verifies the token by checking its signature and decoding its payload.
+
+  - Whenever the user want to access guarded resources, the user sends in the JWT in the `Authorization` header of the request, typically in the format `Bearer <token>`. If the token signature is valid and the token has not expired, the server fetches the user information based on the token's payload and allows access to the requested resource. If the token is invalid or expired, the server returns an error response (e.g., `401 Unauthorized`).
+
+5. **Access Control**: If the token is valid, the server allows access to protected resources or endpoints. If the token is invalid or expired, the server returns an appropriate error response (e.g., `401 Unauthorized`).
