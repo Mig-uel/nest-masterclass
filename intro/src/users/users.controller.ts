@@ -8,8 +8,10 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { AccessTokenGuard } from 'src/auth/guards/access-token/access-token.guard';
 import { PaginationQueryDto } from 'src/common/pagination/dtos/pagination-query.dto';
 import type { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
@@ -78,6 +80,7 @@ export class UsersController {
   }
 
   @Post('create-many')
+  @UseGuards(AccessTokenGuard)
   createManyUsers(@Body() createUsersDto: CreateManyUsersDto) {
     return this.usersService.createMany(createUsersDto);
   }
