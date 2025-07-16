@@ -8,9 +8,9 @@ import {
 import { type ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { HashingProvider } from 'src/auth/providers/hashing.provider';
+import JWTConfig from 'src/config/jwt.config';
 import { UsersService } from 'src/users/users.service';
 import { SignInDto } from '../dtos/sign-in.dto';
-import JWTConfig from '../config/jwt.config';
 
 @Injectable()
 export class SignInProvider {
