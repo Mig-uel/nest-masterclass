@@ -857,6 +857,69 @@ The authentication process using JWTs typically involves the following steps:
 3. **Token Storage**: The client stores the JWT (usually in local storage or a cookie) for future requests.
 4. **Token Verification**: For subsequent requests, the client includes the JWT in the request headers (usually in the `Authorization` header). The server verifies the token by checking its signature and decoding its payload.
 
-  - Whenever the user want to access guarded resources, the user sends in the JWT in the `Authorization` header of the request, typically in the format `Bearer <token>`. If the token signature is valid and the token has not expired, the server fetches the user information based on the token's payload and allows access to the requested resource. If the token is invalid or expired, the server returns an error response (e.g., `401 Unauthorized`).
+- Whenever the user want to access guarded resources, the user sends in the JWT in the `Authorization` header of the request, typically in the format `Bearer <token>`. If the token signature is valid and the token has not expired, the server fetches the user information based on the token's payload and allows access to the requested resource. If the token is invalid or expired, the server returns an error response (e.g., `401 Unauthorized`).
 
 5. **Access Control**: If the token is valid, the server allows access to protected resources or endpoints. If the token is invalid or expired, the server returns an appropriate error response (e.g., `401 Unauthorized`).
+
+## Guards and Decorators
+
+### Introducing Guards
+
+Guards in NestJS are used to protect routes and control access to specific endpoints based on certain conditions. They allow you to implement authentication, authorization, and other access control mechanisms in your application.
+
+The sole purpose of guards is to determine whether a request should be allowed to proceed to the next handler (e.g., a controller method) or not. If a guard returns `true`, the request is allowed to continue; if it returns `false`, the request is denied.
+
+Guards are typically used to implement authentication and authorization logic, such as checking if a user is authenticated, has the required permissions, or meets certain conditions before accessing a specific route.
+
+### Using Guards
+
+To use guards in NestJS, you need to create a class that implements the `CanActivate` interface. This interface requires you to implement a `canActivate` method that contains the logic for determining whether the request should be allowed or denied.
+
+```typescript
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common'
+@Injectable()
+export class AuthGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest()
+    // Implement your authentication logic here
+    return !!request.user // Allow access if user is authenticated
+  }
+}
+```
+
+In this example, the `AuthGuard` checks if the request has a user object (indicating that the user is authenticated) and allows access if the user is present. If the user is not authenticated, the guard will return `false`, denying access to the route.
+You can apply guards to specific routes or controllers using the `@UseGuards()` decorator. This allows you to specify which guards should be applied to a particular route or controller.
+
+```typescript
+import { Controller, Post, UseGuards } from '@nestjs/common'
+import { AuthGuard } from './auth.guard'
+
+@Controller('auth')
+export class AuthController {
+  @Post('sign-in')
+  @UseGuards(AuthGuard)
+  async signIn() {
+    // Sign-in logic here
+  }
+}
+```
+
+In this example, the `AuthGuard` is applied to the `signIn` route, meaning that the guard will be executed before the route handler is called. If the guard returns `false`, the request will be denied, and the route handler will not be executed.
+
+You can apply guards at the controller level as well, which means that all routes within that controller will be protected by the specified guard.
+
+```typescript
+import { Controller, Post, UseGuards } from '@nestjs/common'
+import { AuthGuard } from './auth.guard'
+
+@Controller('auth')
+@UseGuards(AuthGuard)
+export class AuthController {
+  @Post('sign-in')
+  async signIn() {
+    // Sign-in logic here
+  }
+}
+```
+
+In this example, the `AuthGuard` is applied to the entire `AuthController`, meaning that all routes within this controller will be protected by the guard. If the guard returns `false` for any route, the request will be denied, and the corresponding route handler will not be executed.
