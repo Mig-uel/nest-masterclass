@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
+import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
 import { PaginationModule } from './common/pagination/pagination.module';
 import AppConfig from './config/app.config';
 import DatabaseConfig from './config/database.config';
@@ -22,8 +23,9 @@ const ENV = process.env.NODE_ENV;
     // Globally guard routes
     {
       provide: APP_GUARD,
-      useClass: AccessTokenGuard,
+      useClass: AuthenticationGuard,
     },
+    AccessTokenGuard,
   ],
   imports: [
     ConfigModule.forRoot({
