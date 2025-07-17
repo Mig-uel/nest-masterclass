@@ -11,6 +11,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { AuthType } from 'src/auth/enums/auth-type.enum';
 import { AccessTokenGuard } from 'src/auth/guards/access-token/access-token.guard';
 import { PaginationQueryDto } from 'src/common/pagination/dtos/pagination-query.dto';
 import type { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
@@ -70,6 +72,7 @@ export class UsersController {
    */
   @Post()
   // @SetMetadata('authType', 'none') // set custom metadata
+  @Auth(AuthType.None)
   createUser(
     @Body() createUserDto: CreateUserDto,
     @Headers() _: any, // Get headers from request
