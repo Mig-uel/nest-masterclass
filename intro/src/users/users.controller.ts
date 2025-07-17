@@ -69,6 +69,7 @@ export class UsersController {
    * @returns
    */
   @Post()
+  // @SetMetadata('authType', 'none') // set custom metadata
   createUser(
     @Body() createUserDto: CreateUserDto,
     @Headers() _: any, // Get headers from request
