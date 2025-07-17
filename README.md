@@ -923,3 +923,45 @@ export class AuthController {
 ```
 
 In this example, the `AuthGuard` is applied to the entire `AuthController`, meaning that all routes within this controller will be protected by the guard. If the guard returns `false` for any route, the request will be denied, and the corresponding route handler will not be executed.
+
+### What are Decorators?
+
+Decorators aren't a NestJS-specific feature; they are a part of TypeScript and JavaScript. Decorators are a way to add metadata to classes, methods, properties, or parameters. They allow you to modify the behavior of the decorated element or provide additional information about it.
+
+Decorators are functions that can be applied to classes, methods, properties, or parameters. They are prefixed with the `@` symbol and can take arguments to customize their behavior.
+
+For example, the `@Injectable()` decorator is used to mark a class as a provider that can be injected into other components. The `@Controller()` decorator is used to mark a class as a controller that handles incoming requests.
+
+We have been using decorators throughout this course, such as `@Controller()`, `@Get()`, `@Post()`, `@Injectable()`, and many others. These decorators provide metadata about the class or method they are applied to, allowing NestJS to understand how to handle requests and manage dependencies.
+
+#### What is Metadata?
+
+Metadata is additional information about a class, method, property, or parameter that can be used by the framework to understand how to handle it. In NestJS, metadata is used to define routes, dependencies, and other aspects of the application.
+
+When you apply a decorator to a class or method, it adds metadata to that element. This metadata can then be accessed by the framework to determine how to handle requests, inject dependencies, or perform other operations.
+
+For example, when you apply the `@Controller()` decorator to a class, it adds metadata that indicates that the class is a controller. This metadata is used by NestJS to register the controller and its routes in the application.
+
+### Using Metadata
+
+NestJS offers the `Reflector` class, which provides methods for accessing metadata associated with classes, methods, properties, and parameters. The `Reflector` allows you to retrieve metadata that has been set by decorators.
+
+You can use the `Reflector` to access metadata in your guards, interceptors, middleware, pipes, and other components. This allows you to implement custom logic based on the metadata associated with the elements in your application.
+
+```typescript
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common'
+import { Reflector } from '@nestjs/core'
+
+@Injectable()
+export class RolesGuard implements CanActivate {
+  constructor(private reflector: Reflector) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const roles = this.reflector.get<string[]>('roles', context.getHandler())
+    const user = context.switchToHttp().getRequest().user
+    return user && user.roles && roles.some((role) => user.roles.includes(role))
+  }
+}
+```
+
+In this example, the `RolesGuard` uses the `Reflector` to retrieve the `roles` metadata associated with the route handler. It checks if the user has any of the required roles before allowing access to the route.
