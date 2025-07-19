@@ -34,7 +34,7 @@ export class UsersController {
     status: 200,
     description: 'User fetched successfully based on the param',
   })
-  getUsers(@Param() getUserParamDto: GetUsersParamDto): Promise<User> {
+  getUser(@Param() getUserParamDto: GetUsersParamDto): Promise<User> {
     const { id } = getUserParamDto;
 
     return this.usersService.findOneById(id);
