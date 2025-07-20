@@ -26,16 +26,19 @@ export class RefreshTokensProvider {
   async refreshTokens(refreshTokenDto: RefreshTokenDto) {
     try {
       // Verify the refresh token using JWT Service
-      const { sub } = await this.jwtService.verifyAsync<
-        Pick<ActiveUserData, 'sub'>
+      const { sub, email } = await this.jwtService.verifyAsync<
+        Partial<ActiveUserData>
       >(refreshTokenDto.refreshToken, {
         secret: this.jwtConfig.secret,
         audience: this.jwtConfig.audience,
         issuer: this.jwtConfig.issuer,
       });
 
+      // Check if an access token was sent and reject it
+      if (email) throw new UnauthorizedException();
+
       // Fetch user from the database
-      const user = await this.usersService.findOneById(sub);
+      const user = await this.usersService.findOneById(sub!);
 
       // Generate the tokens
       return await this.generateTokensProvider.generateTokens(user);
