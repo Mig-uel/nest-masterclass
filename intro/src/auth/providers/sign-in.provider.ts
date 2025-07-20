@@ -11,6 +11,7 @@ import { HashingProvider } from 'src/auth/providers/hashing.provider';
 import JWTConfig from 'src/config/jwt.config';
 import { UsersService } from 'src/users/users.service';
 import { SignInDto } from '../dtos/sign-in.dto';
+import type { ActiveUserData } from '../interfaces/active-user-data.interface';
 
 @Injectable()
 export class SignInProvider {
@@ -49,7 +50,7 @@ export class SignInProvider {
         {
           sub: user.id,
           email: user.email,
-        },
+        } as ActiveUserData,
         {
           audience: this.jwtConfig.audience,
           issuer: this.jwtConfig.issuer,
