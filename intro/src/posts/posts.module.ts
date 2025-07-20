@@ -7,6 +7,7 @@ import { TagsModule } from '../tags/tags.module';
 import { Post } from './entities/post.entity';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
+import { CreatePostProvider } from './providers/create-post.provider';
 
 @Module({
   controllers: [PostsController],
@@ -17,6 +18,6 @@ import { PostsService } from './posts.service';
     TagsModule,
     PaginationModule,
   ],
-  providers: [PostsService],
+  providers: [PostsService, CreatePostProvider],
 })
 export class PostsModule {}
