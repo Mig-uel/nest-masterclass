@@ -114,12 +114,4 @@ export class CreatePostDto {
   @Type(() => CreateMetaOptionsDto)
   @IsOptional()
   metaOptions?: CreateMetaOptionsDto | undefined;
-
-  @ApiProperty({
-    type: 'string',
-    required: true,
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @IsUUID()
-  authorId: string;
 }
