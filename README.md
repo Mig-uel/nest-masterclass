@@ -965,3 +965,29 @@ export class RolesGuard implements CanActivate {
 ```
 
 In this example, the `RolesGuard` uses the `Reflector` to retrieve the `roles` metadata associated with the route handler. It checks if the user has any of the required roles before allowing access to the route.
+
+## Introduction to Refresh Tokens
+
+### What are Refresh Tokens?
+
+Refresh tokens are a type of token used in authentication systems to obtain a new access token without requiring the user to re-enter their credentials. They are typically used in conjunction with access tokens to provide a more secure and efficient authentication mechanism.
+
+When a user logs in, they receive both an access token and a refresh token. The access token is used to authenticate requests to protected resources, while the refresh token is used to obtain a new access token when the current one expires.
+
+### Why Use Refresh Tokens?
+
+Refresh tokens are tokens that let you obtain a new access token without requiring the user to log in again. They are typically used in scenarios where access tokens have a short expiration time (e.g., 15 minutes) to enhance security.
+
+Refresh tokens cannot be used as a replacement for access tokens. They are meant to be used in conjunction with access tokens to provide a seamless user experience while maintaining security.
+
+When an access token expires, the client can use the refresh token to request a new access token without requiring the user to log in again. This allows for a smoother user experience, as users do not have to re-enter their credentials frequently.
+
+A refresh token's payload typically contains information about the user, such as their user ID, roles, and any other relevant data. It may also include an expiration time to limit the lifetime of the refresh token.
+
+### How Refresh Tokens Work
+
+Refresh tokens are nothing but JWT's, generated using the same strategy as access tokens, but having a different payload and expiration time.
+
+When a user logs in, they receive both an access token and a refresh token. The access token is used to authenticate requests to protected resources, while the refresh token is used to obtain a new access token when the current one expires.
+
+When the access token expires, the client can send a request to the server with the refresh token to obtain a new access token. The server verifies the refresh token, and if it is valid, it generates a new access token and returns it to the client.
