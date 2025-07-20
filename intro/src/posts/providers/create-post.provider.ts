@@ -46,7 +46,7 @@ export class CreatePostProvider {
         createPostDto.tags || [],
       );
 
-      if (createPostDto.tags?.length !== tags.length)
+      if (createPostDto.tags && createPostDto.tags?.length !== tags.length)
         throw new ConflictException('Tags are mismatched! Please try again...');
 
       // Create post
