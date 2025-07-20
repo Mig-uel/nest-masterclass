@@ -5,6 +5,7 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import type { ActiveUserData } from 'src/auth/interfaces/active-user-data.interface';
 import type { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 import type { Repository } from 'typeorm';
@@ -14,12 +15,13 @@ import { CreatePostDto } from './dtos/create-post.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
 import { Post } from './entities/post.entity';
+import { CreatePostProvider } from './providers/create-post.provider';
 
 @Injectable()
 export class PostsService {
   /**
    * Inject Users Service, Meta Options Service, Tags Service,
-   * Posts Repository, and PaginationProvider
+   * Posts Repository, PaginationProvider, and CreatePostProvider
    * @param usersService
    * @param metaOptionsService
    * @param postsRepository
@@ -31,6 +33,7 @@ export class PostsService {
     private readonly postsRepository: Repository<Post>,
     private readonly tagsService: TagsService,
     private readonly paginationProvider: PaginationProvider,
+    private readonly createPostProvider: CreatePostProvider,
   ) {}
 
   /**
@@ -61,52 +64,8 @@ export class PostsService {
    * Method for creating a post
    * @param createPostDto
    */
-  async create(createPostDto: CreatePostDto) {
-    try {
-      // Find author from database
-      const author = await this.usersService.findOneById(
-        createPostDto.authorId,
-      );
-
-      // Handle no author
-      if (!author) {
-        console.log('No user found!');
-        return;
-      }
-
-      // Find existing slug
-      const existingSlug = await this.postsRepository.findOne({
-        where: {
-          slug: createPostDto.slug,
-        },
-      });
-
-      if (existingSlug)
-        throw new BadRequestException(
-          'The provided slug is not available, please try again',
-        );
-
-      // Finds tags
-      const tags = await this.tagsService.findMultipleTags(
-        createPostDto.tags || [],
-      );
-
-      // Create post
-      const post = this.postsRepository.create({
-        ...createPostDto,
-        author,
-        tags,
-      });
-
-      // Return the post
-      return await this.postsRepository.save(post);
-    } catch (error) {
-      if (error instanceof BadRequestException) throw error;
-
-      throw new BadRequestException(
-        'Unable to process your request at the moment, please try again later',
-      );
-    }
+  async create(createPostDto: CreatePostDto, user: ActiveUserData) {
+    return await this.createPostProvider.create(createPostDto, user);
   }
 
   /**
