@@ -10,7 +10,7 @@ import type { Paginated } from 'src/common/pagination/interfaces/paginated.inter
 import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 import type { Repository } from 'typeorm';
 import { TagsService } from '../tags/tags.service';
-import { UsersService } from './../users/users.service';
+import { UsersService } from '../users/users.service';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';

@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PostType, Status } from '../types/types';
-import { Tag } from './../../tags/entities/tag.entity';
+import { Tag } from '../../tags/entities/tag.entity';
 
 @Entity()
 export class Post {
