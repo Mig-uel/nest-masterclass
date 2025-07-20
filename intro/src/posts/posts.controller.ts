@@ -10,7 +10,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreatePostDto } from './dtos/create-post.dto';
+import { ActiveUser } from 'src/auth/decorators/active-user.decorator';
+import type { ActiveUserData } from 'src/auth/interfaces/active-user-data.interface';
+import type { CreatePostDto } from './dtos/create-post.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
 import { PostsService } from './posts.service';
@@ -43,8 +45,11 @@ export class PostsController {
     status: 201,
   })
   @Post()
-  createPost(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+  createPost(
+    @Body() createPostDto: CreatePostDto,
+    @ActiveUser() user: ActiveUserData,
+  ) {
+    return this.postsService.create(createPostDto, user);
   }
 
   @ApiOperation({
