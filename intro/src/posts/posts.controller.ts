@@ -12,7 +12,7 @@ import {
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ActiveUser } from 'src/auth/decorators/active-user.decorator';
 import type { ActiveUserData } from 'src/auth/interfaces/active-user-data.interface';
-import type { CreatePostDto } from './dtos/create-post.dto';
+import { CreatePostDto } from './dtos/create-post.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
 import { PostsService } from './posts.service';
