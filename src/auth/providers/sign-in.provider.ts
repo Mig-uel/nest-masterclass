@@ -6,7 +6,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { HashingProvider } from 'src/auth/providers/hashing.provider';
-import JWTConfig from 'src/config/jwt.config';
 import { UsersService } from 'src/users/users.service';
 import { SignInDto } from '../dtos/sign-in.dto';
 import { GenerateTokensProvider } from './generate-tokens.provider';
@@ -17,7 +16,6 @@ export class SignInProvider {
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     private readonly hashingProvider: HashingProvider,
-    @Inject(JWTConfig.KEY)
     private readonly generateTokensProvider: GenerateTokensProvider,
   ) {}
 
@@ -43,10 +41,14 @@ export class SignInProvider {
           'Invalid credentials. Please try again...',
         );
 
+      console.log('ran');
+
       // Return access and refresh tokens
       return await this.generateTokensProvider.generateTokens(user);
     } catch (error) {
       if (error instanceof UnauthorizedException) throw error;
+
+      console.log(error);
 
       throw new RequestTimeoutException(
         'Oops, something went wrong. Please try again...',
