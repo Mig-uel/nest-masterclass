@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import JWTConfig from 'src/config/jwt.config';
+import { User } from 'src/users/entities/user.entity';
+import type { ActiveUserData } from '../interfaces/active-user-data.interface';
 
 @Injectable()
 export class GenerateTokensProvider {
@@ -37,5 +39,34 @@ export class GenerateTokensProvider {
         expiresIn,
       },
     );
+  }
+
+  /**
+   * Generates both access and refresh JWT tokens for a given user.
+   *
+   * @param {User} user - The user entity for whom tokens are generated.
+   * @returns {Promise<{ accessToken: string; refreshToken: string }>} - An object containing the access and refresh tokens.
+   */
+  async generateTokens(
+    user: User,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
+    const [accessToken, refreshToken] = await Promise.all([
+      // Generate access token
+      this.signToken<Partial<ActiveUserData>>(
+        user.id,
+        this.jwtConfig.accessTokenTTL,
+        {
+          email: user.email,
+        },
+      ),
+
+      // Generate refresh token
+      this.signToken(user.id, this.jwtConfig.refreshTokenTTL),
+    ]);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }
