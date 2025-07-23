@@ -1,5 +1,4 @@
 import {
-  forwardRef,
   Inject,
   Injectable,
   UnauthorizedException,
@@ -19,35 +18,45 @@ export class GoogleAuthenticationService implements OnModuleInit {
   constructor(
     @Inject(JWTConfig.KEY)
     private readonly jwtConfig: ConfigType<typeof JWTConfig>,
-    @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     private readonly generateTokensProvider: GenerateTokensProvider,
-  ) {}
-
-  /**
-   * NestJS provides us with a lifecycle hook: OnModuleInit
-   * That guarantees execution after dependency injection
-   */
-  onModuleInit() {
+  ) {
     const clientId = this.jwtConfig.googleClientId;
     const clientSecret = this.jwtConfig.googleClientSecret;
 
     this.oAuthClient = new OAuth2Client(clientId, clientSecret);
   }
 
+  /**
+   * NestJS provides us with a lifecycle hook: OnModuleInit
+   * That guarantees execution after dependency injection
+   */
+  onModuleInit() {}
+
   async authenticate(googleTokenDto: GoogleTokenDto) {
+    console.log(googleTokenDto.token);
     // Verify Google token sent by the user
     const loginTicket = await this.oAuthClient.verifyIdToken({
       idToken: googleTokenDto.token,
     });
 
-    // Extract the payload from Google JWT
+    console.log(loginTicket);
+
+    // Get payload from loginTicket
     const payload = loginTicket.getPayload();
 
     if (!payload) throw new UnauthorizedException();
 
+    // Extract the payload from Google JWT
+    const {
+      email,
+      sub: googleId,
+      given_name: firstName,
+      family_name: lastName,
+    } = payload;
+
     // Find the user in the database using the GoogleId
-    const user = await this.usersService.findOneByGoogleId(payload.sub);
+    const user = await this.usersService.findOneByGoogleId(googleId);
 
     // If googleId exists in database, generate JWT
     if (user) return this.generateTokensProvider.generateTokens(user);
