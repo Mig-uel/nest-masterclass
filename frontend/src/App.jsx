@@ -2,8 +2,6 @@ import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 
 export default function App() {
   const handleOnSuccess = (response) => {
-    console.log(response);
-
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
 
@@ -11,6 +9,7 @@ export default function App() {
       method: 'POST',
       headers,
       body: JSON.stringify({
+        // Send the Google credential JWT to our server
         token: response.credential,
       }),
     })
