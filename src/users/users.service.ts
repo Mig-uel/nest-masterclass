@@ -10,6 +10,7 @@ import { PaginationProvider } from 'src/common/pagination/providers/pagination.p
 import ProfileConfig from './config/profile.config';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { CreateGoogleUserProvider } from './providers/create-google-user.provider';
 import { CreateUserProvider } from './providers/create-user.provider';
 import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider';
 import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email';
@@ -19,6 +20,7 @@ import { UsersCreateMany } from './providers/users-create-many';
 import { InjectRepository } from '@nestjs/typeorm';
 import type { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import type { GoogleUser } from './interfaces/google-user.interface';
 
 /**
  * Service class to connect to Users table and perform business operations
@@ -38,6 +40,7 @@ export class UsersService {
     private readonly createUserProvider: CreateUserProvider,
     private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
     private readonly findOneByGoogleIdProvider: FindOneByGoogleIdProvider,
+    private readonly createGoogleUserProvider: CreateGoogleUserProvider,
   ) {}
 
   /**
@@ -111,5 +114,9 @@ export class UsersService {
 
   async findOneByGoogleId(googleId: string) {
     return await this.findOneByGoogleIdProvider.findOneByGoogleId(googleId);
+  }
+
+  async createGoogleUser(googleUser: GoogleUser) {
+    return await this.createGoogleUserProvider.createGoogleUser(googleUser);
   }
 }
