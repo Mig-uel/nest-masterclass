@@ -25,9 +25,9 @@ export class User {
   email: string;
 
   @Column({
-    nullable: false,
+    nullable: true,
   })
-  password: string;
+  password?: string;
 
   @OneToMany(() => Post, (post) => post.author, {
     onDelete: 'CASCADE',
