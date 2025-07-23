@@ -33,7 +33,8 @@ export class SignInProvider {
       // Compare password to the hash
       const isPasswordsMatching = await this.hashingProvider.comparePassword(
         signInDto.password,
-        user.password,
+        // TODO => temp fix
+        user.password!,
       );
 
       if (!isPasswordsMatching)
