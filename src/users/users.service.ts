@@ -11,6 +11,7 @@ import ProfileConfig from './config/profile.config';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { CreateUserProvider } from './providers/create-user.provider';
+import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider';
 import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email';
 import { UsersCreateMany } from './providers/users-create-many';
 
@@ -36,6 +37,7 @@ export class UsersService {
     private readonly paginationProvider: PaginationProvider,
     private readonly createUserProvider: CreateUserProvider,
     private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
+    private readonly findOneByGoogleIdProvider: FindOneByGoogleIdProvider,
   ) {}
 
   /**
@@ -105,5 +107,9 @@ export class UsersService {
 
   async createMany(createUsersDto: CreateManyUsersDto) {
     return await this.usersCreateMany.createMany(createUsersDto);
+  }
+
+  async findOneByGoogleId(googleId: string) {
+    return await this.findOneByGoogleIdProvider.findOneByGoogleId(googleId);
   }
 }

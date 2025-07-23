@@ -6,6 +6,7 @@ import { PaginationModule } from 'src/common/pagination/pagination.module';
 import ProfileConfig from './config/profile.config';
 import { User } from './entities/user.entity';
 import { CreateUserProvider } from './providers/create-user.provider';
+import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider';
 import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email';
 import { UsersCreateMany } from './providers/users-create-many';
 import { UsersController } from './users.controller';
@@ -18,6 +19,7 @@ import { UsersService } from './users.service';
     UsersCreateMany,
     CreateUserProvider,
     FindOneUserByEmailProvider,
+    FindOneByGoogleIdProvider,
   ],
   exports: [UsersService],
   imports: [
