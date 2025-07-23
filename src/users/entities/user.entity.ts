@@ -29,6 +29,11 @@ export class User {
   })
   password?: string;
 
+  @Column({
+    nullable: true,
+  })
+  googleId?: string;
+
   @OneToMany(() => Post, (post) => post.author, {
     onDelete: 'CASCADE',
   })
