@@ -34,9 +34,7 @@ export class Upload {
   })
   mime: string;
 
-  @Column({
-    length: 1024,
-  })
+  @Column()
   size: number;
 
   @CreateDateColumn()
