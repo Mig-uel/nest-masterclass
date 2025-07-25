@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
 import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
+import { DataResponseInterceptor } from './common/interceptors/data-response/data-response.interceptor';
 import { PaginationModule } from './common/pagination/pagination.module';
 import AppConfig from './config/app.config';
 import DatabaseConfig from './config/database.config';
@@ -26,6 +27,10 @@ const ENV = process.env.NODE_ENV;
       useClass: AuthenticationGuard,
     },
     AccessTokenGuard,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DataResponseInterceptor,
+    },
   ],
   imports: [
     ConfigModule.forRoot({
