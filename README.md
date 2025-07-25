@@ -285,7 +285,7 @@ A controller receives an incoming request, processes it and decides which method
 One controller file can process multiple routes, and each route can have its own method to handle the request. This allows you to group related routes together in a single controller.
 
 ```typescript
-import { Controller } from '@nestjs/common'
+import { Controller } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -312,7 +312,7 @@ While the job of the controller is handle routing logic, the job of the provider
 Providers are typically decorated with the `@Injectable()` decorator, which allows them to be injected into other components, such as controllers or other providers.
 
 ```typescript
-import { Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UsersService {
@@ -391,15 +391,15 @@ Pipes in NestJS can be categorized into two main types:
 Example of a custom pipe:
 
 ```typescript
-import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common'
+import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
 @Injectable()
 export class CustomPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
     // Custom validation or transformation logic
     if (typeof value !== 'string') {
-      throw new Error('Value must be a string')
+      throw new Error('Value must be a string');
     }
-    return value.trim() // Example transformation: trim whitespace
+    return value.trim(); // Example transformation: trim whitespace
   }
 }
 ```
@@ -421,18 +421,18 @@ DTOs are often defined as classes with properties that correspond to the expecte
 Example of a DTO:
 
 ```typescript
-import { IsString, IsInt, IsOptional } from 'class-validator'
+import { IsString, IsInt, IsOptional } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
-  name: string
+  name: string;
 
   @IsInt()
-  age: number
+  age: number;
 
   @IsOptional()
   @IsString()
-  email?: string
+  email?: string;
 }
 ```
 
@@ -449,7 +449,7 @@ A dependency is a component or module that a class or function relies on to perf
 For example, we have a user class, post class, and a page class. Both the post and page classes depend on the user class to perform certain operations, such as fetching user data or validating user permissions.
 
 ```typescript
-import { UserService } from './user.service'
+import { UserService } from './user.service';
 
 @Injectable()
 export class PostService {
@@ -457,8 +457,8 @@ export class PostService {
   constructor(private userService: UserService) {}
 
   async getPostAuthor(postId: string) {
-    const post = await this.findPostById(postId)
-    return this.userService.findById(post.authorId)
+    const post = await this.findPostById(postId);
+    return this.userService.findById(post.authorId);
   }
 }
 
@@ -469,8 +469,8 @@ export class PageService {
   constructor(private userService: UserService) {}
 
   async getPageOwner(pageId: string) {
-    const page = await this.findPageById(pageId)
-    return this.userService.findById(page.ownerId)
+    const page = await this.findPageById(pageId);
+    return this.userService.findById(page.ownerId);
   }
 }
 ```
@@ -484,7 +484,7 @@ With dependency injection, the framework (in this case, NestJS) is responsible f
 In NestJS, you can inject dependencies into classes using the `@Injectable()` decorator and constructor injection. When a class is decorated with `@Injectable()`, it becomes a provider that can be injected into other components, such as controllers or services.
 
 ```typescript
-import { Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common';
 @Injectable()
 export class UserService {
   // This service can be injected into other components
@@ -571,25 +571,25 @@ You do not create the repository manually. Instead, TypeORM automatically create
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column()
-  username: string
+  username: string;
 
   @Column()
-  email: string
+  email: string;
 
   @Column()
-  password: string
+  password: string;
 
   @Column({ default: true })
-  isActive: boolean
+  isActive: boolean;
 
   @CreateDateColumn()
-  createdAt: Date
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date
+  updatedAt: Date;
 }
 ```
 
@@ -598,15 +598,15 @@ This example defines a `User` entity with properties such as `id`, `username`, `
 ### Example of a UsersService
 
 ```typescript
-Injectable()
+Injectable();
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async findAll(): Promise<User[]> {
-    return this.userRepository.find()
+    return this.userRepository.find();
   }
 }
 ```
@@ -678,24 +678,24 @@ You can throw these exceptions in your controllers or services to indicate speci
 In NestJS, you can handle exceptions in services by using the `try-catch` block. This allows you to catch specific exceptions and handle them gracefully, returning appropriate responses or logging the errors.
 
 ```typescript
-import { Injectable } from '@nestjs/common'
-import { BadRequestException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
   async findUser(id: string) {
     try {
       // Simulate a user lookup
-      const user = await this.userRepository.findOne(id)
+      const user = await this.userRepository.findOne(id);
       if (!user) {
-        throw new NotFoundException('User not found')
+        throw new NotFoundException('User not found');
       }
-      return user
+      return user;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        throw error
+        throw error;
       }
-      throw new BadRequestException('Invalid user ID')
+      throw new BadRequestException('Invalid user ID');
     }
   }
 }
@@ -805,7 +805,7 @@ This way, even if two users have the same password, their hashed passwords will 
 #### Example of Hashing and Salting
 
 ```ts
-$2y$10$eImy5z8Z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m
+$2y$10$eImy5z8Z1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i6j7k8l9m;
 ```
 
 - 2y: This indicates the hashing algorithm used (bcrypt in this case).
@@ -876,13 +876,13 @@ Guards are typically used to implement authentication and authorization logic, s
 To use guards in NestJS, you need to create a class that implements the `CanActivate` interface. This interface requires you to implement a `canActivate` method that contains the logic for determining whether the request should be allowed or denied.
 
 ```typescript
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common'
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 @Injectable()
 export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest()
+    const request = context.switchToHttp().getRequest();
     // Implement your authentication logic here
-    return !!request.user // Allow access if user is authenticated
+    return !!request.user; // Allow access if user is authenticated
   }
 }
 ```
@@ -891,8 +891,8 @@ In this example, the `AuthGuard` checks if the request has a user object (indica
 You can apply guards to specific routes or controllers using the `@UseGuards()` decorator. This allows you to specify which guards should be applied to a particular route or controller.
 
 ```typescript
-import { Controller, Post, UseGuards } from '@nestjs/common'
-import { AuthGuard } from './auth.guard'
+import { Controller, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -909,8 +909,8 @@ In this example, the `AuthGuard` is applied to the `signIn` route, meaning that 
 You can apply guards at the controller level as well, which means that all routes within that controller will be protected by the specified guard.
 
 ```typescript
-import { Controller, Post, UseGuards } from '@nestjs/common'
-import { AuthGuard } from './auth.guard'
+import { Controller, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 @UseGuards(AuthGuard)
@@ -949,17 +949,19 @@ NestJS offers the `Reflector` class, which provides methods for accessing metada
 You can use the `Reflector` to access metadata in your guards, interceptors, middleware, pipes, and other components. This allows you to implement custom logic based on the metadata associated with the elements in your application.
 
 ```typescript
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common'
-import { Reflector } from '@nestjs/core'
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.get<string[]>('roles', context.getHandler())
-    const user = context.switchToHttp().getRequest().user
-    return user && user.roles && roles.some((role) => user.roles.includes(role))
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    const user = context.switchToHttp().getRequest().user;
+    return (
+      user && user.roles && roles.some((role) => user.roles.includes(role))
+    );
   }
 }
 ```
@@ -991,3 +993,72 @@ Refresh tokens are nothing but JWT's, generated using the same strategy as acces
 When a user logs in, they receive both an access token and a refresh token. The access token is used to authenticate requests to protected resources, while the refresh token is used to obtain a new access token when the current one expires.
 
 When the access token expires, the client can send a request to the server with the refresh token to obtain a new access token. The server verifies the refresh token, and if it is valid, it generates a new access token and returns it to the client.
+
+## Serialization and Interceptors
+
+## Introducing Interceptors and Serialization
+
+Before we dive into serialization and interceptors, let's understand what they are and how they fit into the NestJS framework.
+
+Interceptors in NestJS are a powerful feature that allows you to intercept and modify the request and response objects before they reach the route handler or after the route handler has processed the request. They can be used for various purposes, such as logging, transforming data, caching, and more.
+Serialization is the process of converting an object into a format that can be easily transmitted or stored. In the context of NestJS, serialization typically refers to transforming the response data before it is sent back to the client.
+
+In NestJs's Request-Response lifecycle, interceptors are executed twice - once before the request reaches the controller and secondly after the controller has processed the request. This allows you to modify the request or response data at both stages.
+
+### Purpose of Interceptors
+
+Interceptors serve several purposes in NestJS:
+
+- **Transforming Data**: Interceptors can modify the request or response data before it is sent to the client. This is useful for formatting data, removing sensitive information, or applying transformations.
+- **Logging**: Interceptors can log information about the request and response, such as execution time, request headers, and response status codes. This is useful for debugging and monitoring purposes.
+- **Caching**: Interceptors can implement caching mechanisms to store and retrieve responses for specific requests, improving performance and reducing server load.
+- **Exception Handling**: Interceptors can catch exceptions thrown by the route handler and handle them gracefully, returning appropriate error responses to the client.
+- **Custom Logic**: Interceptors can implement custom logic that needs to be executed before or after the route handler, such as authentication checks, authorization checks, or other business logic.
+
+And in layman's terms, interceptors serve several purposes in NestJS:
+
+- bind extra logic before or after the execution of a route handler
+- transform the result returned from a function
+- transform the exception thrown from a function
+- extend the basic function behavior
+- completely override a function depending on specific conditions (e.g., caching)
+
+### Examples
+
+**Example 1**: You have a method that returns a user object, but you want to return only specific fields (e.g., username and email) instead of the entire user object.
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "password": "hashed_password",
+  "googleId": "1234567890",
+  "id": "1"
+}
+```
+
+to
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "id": "1"
+}
+```
+
+**Example 2**: You want to alter the response data format before sending it to the client. For example, you want to wrap the response data in a custom object that includes metadata such as status and message.
+
+```json
+{
+  "apiVersion": "1.0",
+  "data": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "id": "1"
+  }
+}
+```
