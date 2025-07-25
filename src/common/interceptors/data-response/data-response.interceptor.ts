@@ -1,16 +1,33 @@
 import {
   CallHandler,
   ExecutionContext,
+  Inject,
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { Observable, tap } from 'rxjs';
+import type { ConfigType } from '@nestjs/config';
+import { map, Observable } from 'rxjs';
+import AppConfig from 'src/config/app.config';
 
 @Injectable()
 export class DataResponseInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log('Before...');
+  constructor(
+    @Inject(AppConfig.KEY)
+    private readonly appConfig: ConfigType<typeof AppConfig>,
+  ) {}
 
-    return next.handle().pipe(tap((data) => console.log('After...', data)));
+  intercept<T>(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Observable<{
+    apiVersion: string | undefined;
+    data: T;
+  }> {
+    return next.handle().pipe(
+      map((data: T) => ({
+        apiVersion: this.appConfig.apiVersion,
+        data,
+      })),
+    );
   }
 }
