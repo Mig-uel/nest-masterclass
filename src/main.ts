@@ -1,8 +1,11 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { config } from 'aws-sdk';
 import { AppModule } from './app.module';
 
+import { type ConfigType } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import AWSConfig from './config/aws.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,7 +27,7 @@ async function bootstrap() {
   /**
    * Swagger config
    */
-  const config = new DocumentBuilder()
+  const swaggerConfig = new DocumentBuilder()
     .setTitle('NestJS Masterclass - Blog App API')
     .setDescription('Use the base API URL of http://localhost:3000')
     .setTermsOfService('http://localhost:3000/terms-of-service')
@@ -34,10 +37,21 @@ async function bootstrap() {
     .build();
 
   // Instantiate Swagger document
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
 
   // Use document to complete setup
   SwaggerModule.setup('docs', app, document);
+
+  // Setup the AWS sdk for uploading files to S3 bucket
+  const awsConfigService = app.get<ConfigType<typeof AWSConfig>>(AWSConfig.KEY);
+
+  config.update({
+    credentials: {
+      accessKeyId: awsConfigService.awsAccessKey!,
+      secretAccessKey: awsConfigService.awsSecretAccessKey!,
+    },
+    region: awsConfigService.awsRegion!,
+  });
 
   // Enable cors
   app.enableCors();
