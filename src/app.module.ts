@@ -13,12 +13,13 @@ import AWSConfig from './config/aws.config';
 import DatabaseConfig from './config/database.config';
 import EnvValidation from './config/env.validation';
 import JWTConfig from './config/jwt.config';
+import MailConfig from './config/mail.config';
+import { MailModule } from './mail/mail.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { PostsModule } from './posts/posts.module';
 import { TagsModule } from './tags/tags.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { UsersModule } from './users/users.module';
-import { MailModule } from './mail/mail.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -40,7 +41,7 @@ const ENV = process.env.NODE_ENV;
       isGlobal: true,
       // envFilePath: ['.env.development'],
       envFilePath: !ENV ? '.env' : `.env.${ENV}`,
-      load: [AppConfig, AWSConfig, DatabaseConfig, JWTConfig],
+      load: [AppConfig, AWSConfig, DatabaseConfig, JWTConfig, MailConfig],
       validationSchema: EnvValidation,
     }),
     UsersModule,
