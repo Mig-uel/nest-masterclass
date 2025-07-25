@@ -26,4 +26,9 @@ export default Joi.object({
 
   // API version
   API_VERSION: Joi.string().required(),
+
+  // Mail
+  MAIL_HOST: Joi.string().required(),
+  SMTP_USERNAME: Joi.string().required(),
+  SMTP_PASSWORD: Joi.string().required(),
 });
