@@ -23,4 +23,7 @@ export default Joi.object({
   // Google client variables
   GOOGLE_CLIENT_ID: Joi.string().required(),
   GOOGLE_CLIENT_SECRET: Joi.string().required(),
+
+  // API version
+  API_VERSION: Joi.string().required(),
 });
