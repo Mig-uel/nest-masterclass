@@ -7,8 +7,8 @@ Content-Type: application/json
 
 # Request Body
 {
-  "firstName": "John",
+  "firstName": "Jane",
   "lastName": "Doe",
-  "email": "john@example.com",
-  "password": "password12@"
+  "email": "jane@email.com",
+  "password": "password1$"
 }
