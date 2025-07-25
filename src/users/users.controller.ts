@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Headers,
@@ -8,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators/auth.decorator';
@@ -71,6 +73,7 @@ export class UsersController {
   @Post()
   // @SetMetadata('authType', 'none') // Set custom metadata
   @Auth(AuthType.None) // Set AuthType metadata to none
+  @UseInterceptors(ClassSerializerInterceptor)
   createUser(
     @Body() createUserDto: CreateUserDto,
     @Headers() _: any, // Get headers from request
