@@ -31,7 +31,6 @@ export class UploadsController {
     summary: 'Upload a new image to the server',
   })
   uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
     return this.uploadsService.uploadFile(file);
   }
 }
