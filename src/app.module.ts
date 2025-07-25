@@ -9,12 +9,14 @@ import { AuthenticationGuard } from './auth/guards/authentication/authentication
 import { DataResponseInterceptor } from './common/interceptors/data-response/data-response.interceptor';
 import { PaginationModule } from './common/pagination/pagination.module';
 import AppConfig from './config/app.config';
+import AWSConfig from './config/aws.config';
 import DatabaseConfig from './config/database.config';
 import EnvValidation from './config/env.validation';
 import JWTConfig from './config/jwt.config';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { PostsModule } from './posts/posts.module';
 import { TagsModule } from './tags/tags.module';
+import { UploadsModule } from './uploads/uploads.module';
 import { UsersModule } from './users/users.module';
 
 const ENV = process.env.NODE_ENV;
@@ -37,7 +39,7 @@ const ENV = process.env.NODE_ENV;
       isGlobal: true,
       // envFilePath: ['.env.development'],
       envFilePath: !ENV ? '.env' : `.env.${ENV}`,
-      load: [AppConfig, DatabaseConfig, JWTConfig],
+      load: [AppConfig, AWSConfig, DatabaseConfig, JWTConfig],
       validationSchema: EnvValidation,
     }),
     UsersModule,
@@ -63,6 +65,7 @@ const ENV = process.env.NODE_ENV;
     MetaOptionsModule,
     PaginationModule,
     JwtModule.registerAsync(JWTConfig.asProvider()),
+    UploadsModule,
   ],
 })
 export class AppModule {}
