@@ -1,19 +1,17 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
   Patch,
   Post,
   Query,
-  Body,
-  ParseIntPipe,
-  DefaultValuePipe,
 } from '@nestjs/common';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.service';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
 @ApiTags('Users')
@@ -23,10 +21,7 @@ export class UsersController {
     private readonly usersService: UsersService,
   ) {}
 
-  @Get('/:id?')
-  @ApiOperation({
-    summary: 'Fetches a list of registered users on the application.',
-  })
+  @Get('')
   @ApiQuery({
     name: 'limit',
     type: String,
@@ -40,16 +35,20 @@ export class UsersController {
       'The position of the page number that you want the API to return',
     required: false,
   })
+  getUsers(@Query('limit') limit = 10, @Query('page') page = 1) {
+    return this.usersService.findAll(limit, page);
+  }
+
+  @Get('/:id')
+  @ApiOperation({
+    summary: 'Fetches a registered user on the application.',
+  })
   @ApiResponse({
     status: 200,
-    description: 'Users fetched successfully based on the query',
+    description: 'User fetched successfully based on the param',
   })
-  public getUsers(
-    @Param() getUserParamDto: GetUsersParamDto,
-    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
-    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-  ) {
-    return this.usersService.findAll(getUserParamDto, limit, page);
+  public getUser(@Param() getUserParamDto: GetUsersParamDto) {
+    return this.usersService.findOneById(getUserParamDto.id);
   }
 
   @Post()
