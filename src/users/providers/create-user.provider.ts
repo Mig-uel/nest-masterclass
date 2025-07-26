@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HashingProvider } from 'src/auth/providers/hashing.provider';
+import { MailService } from 'src/mail/providers/mail.service';
 import type { Repository } from 'typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { User } from '../entities/user.entity';
@@ -17,6 +18,7 @@ export class CreateUserProvider {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
     @Inject(forwardRef(() => HashingProvider))
     private readonly hashingProvider: HashingProvider,
+    private readonly mailService: MailService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -38,6 +40,9 @@ export class CreateUserProvider {
           createUserDto.password,
         ),
       });
+
+      // Send welcome email
+      await this.mailService.sendUserWelcome(newUser);
 
       return await this.usersRepository.save(newUser);
     } catch (error) {
