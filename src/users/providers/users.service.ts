@@ -1,4 +1,3 @@
-import { GetUsersParamDto } from '../dtos/get-users-param.dto';
 import { Injectable } from '@nestjs/common';
 /**
  * Class to connect to Users table and perform business operations
@@ -8,11 +7,8 @@ export class UsersService {
   /**
    * The method to get all the users from the database
    */
-  public findAll(
-    getUserParamDto: GetUsersParamDto,
-    limt: number,
-    page: number,
-  ) {
+  public findAll(limit: number, page: number) {
+    console.log(limit, page);
     return [
       {
         firstName: 'John',
@@ -29,7 +25,7 @@ export class UsersService {
    */
   public findOneById(id: string) {
     return {
-      id: 1234,
+      id,
       firstName: 'Alice',
       email: 'alice@doe.com',
     };
