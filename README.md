@@ -1062,3 +1062,13 @@ to
   }
 }
 ```
+
+## Unit Testing
+
+### Introduction to Unit Testing
+
+Unit testing is a software testing technique where individual components or functions of an application are tested in isolation to ensure they work as expected. In NestJS, unit testing is an essential part of the development process, allowing developers to catch bugs early and ensure that their code behaves correctly.
+
+Unit tests are typically written using a testing framework, such as Jest, which is the default testing framework used in NestJS applications. Jest provides a simple and powerful way to write and run tests, making it easy to verify the behavior of your code.
+
+In NestJS, unit tests are typically written in separate files with a `.spec.ts` extension. These test files contain test cases that verify the behavior of individual components, such as services, controllers, and modules.
