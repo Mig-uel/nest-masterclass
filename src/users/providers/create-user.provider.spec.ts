@@ -20,6 +20,12 @@ const createMockRepository = <
 describe('CreateUserProvider', () => {
   let provider: CreateUserProvider;
   let usersRepository: MockRepository<User>;
+  const user: Partial<User> = {
+    email: 'email@test.com',
+    firstName: 'John',
+    lastName: 'Test',
+    password: 'password',
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,11 +33,15 @@ describe('CreateUserProvider', () => {
         CreateUserProvider,
         {
           provide: MailService,
-          useValue: {},
+          useValue: {
+            sendUserWelcome: jest.fn(() => Promise.resolve()),
+          },
         },
         {
           provide: HashingProvider,
-          useValue: {},
+          useValue: {
+            hashPassword: jest.fn(() => user.password),
+          },
         },
         {
           provide: DataSource,
