@@ -79,6 +79,7 @@ describe('UsersService', () => {
 
   describe('create', () => {
     it('should be defined', () => {
+      // eslint-disable-next-line
       expect(service.create).toBeDefined();
     });
 
