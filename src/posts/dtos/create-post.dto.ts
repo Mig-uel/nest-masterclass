@@ -52,6 +52,11 @@ export class CreatePostDto {
   @IsUrl()
   featuredImageUrl?: string;
 
+  @IsNotEmpty()
+  @IsString()
+  @IsOptional()
+  content?: string;
+
   @ApiProperty({
     description: 'Must be a valid timestamp in ISO8601',
     example: '2024-03-16T07:46:32+0000',
