@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
-import { TagsService } from './providers/tags/tags.service';
+import { MongooseModule } from '@nestjs/mongoose';
 import { TagsService } from './providers/tags.service';
+import { Tag, TagSchema } from './tag.schema';
 import { TagsController } from './tags.controller';
 
 @Module({
   providers: [TagsService],
-  controllers: [TagsController]
+  controllers: [TagsController],
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: Tag.name,
+        schema: TagSchema,
+      },
+    ]),
+  ],
 })
 export class TagsModule {}
