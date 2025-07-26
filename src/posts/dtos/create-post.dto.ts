@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  IsArray,
   IsEnum,
   IsISO8601,
   IsMongoId,
@@ -68,4 +69,12 @@ export class CreatePostDto {
   @ApiProperty()
   @IsMongoId()
   author: string;
+
+  @ApiProperty()
+  @IsMongoId({
+    each: true,
+  })
+  @IsArray()
+  @IsOptional()
+  tags?: string[];
 }
