@@ -2,12 +2,13 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-  "title": "What's new with NestJS",
+  "title": "NestJS: A New Beginning",
   "postType": "post",
-  "slug": "new-with-nest-js",
+  "slug": "nestjs-a-new-beginning",
   "status": "draft",
   "content": "post-content",
   "featuredImageUrl": "http://localhost.com/images/image1.jpg",
   "publishOn": "2024-03-16T07:46:32+0000",
-  "author": "6884f78648c3f4400949a974"
+  "author": "6884f78648c3f4400949a974",
+  "tags": ["6885406c9446d59043a4a080"]
 }
