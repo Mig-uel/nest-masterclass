@@ -1,22 +1,16 @@
-// For Documenation refer url: https://docs.nestjs.com/openapi/types-and-parameters
-import { postStatus } from '../enums/post-status.enum';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
-  IsArray,
   IsEnum,
   IsISO8601,
-  IsJSON,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUrl,
   Matches,
   MinLength,
-  ValidateNested,
 } from 'class-validator';
+import { PostStatus } from '../enums/post-status.enum';
 import { PostType } from '../enums/post-type.enum';
-import { Type } from 'class-transformer';
-import { CreatePostMetaOptionsDto } from './create-post-meta-options.dto';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreatePostDto {
   @ApiProperty()
@@ -45,25 +39,12 @@ export class CreatePostDto {
   slug: string;
 
   @ApiProperty({
-    enum: postStatus,
+    enum: PostStatus,
     description: "Possible values 'draft', 'scheduled', 'review', 'published'",
   })
-  @IsEnum(postStatus)
+  @IsEnum(PostStatus)
   @IsNotEmpty()
-  status: postStatus;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  content?: string;
-
-  @ApiPropertyOptional({
-    description:
-      'Serialize your JSON object else a validation error will be thrown',
-  })
-  @IsOptional()
-  @IsJSON()
-  schema?: string;
+  status: PostStatus;
 
   @ApiPropertyOptional()
   @IsOptional()
@@ -77,32 +58,4 @@ export class CreatePostDto {
   @IsISO8601()
   @IsOptional()
   publishOn?: Date;
-
-  @ApiPropertyOptional()
-  @IsArray()
-  @IsOptional()
-  @IsString({ each: true })
-  @MinLength(3, { each: true })
-  tags?: string[];
-
-  @ApiPropertyOptional({
-    type: 'array',
-    required: false,
-    items: {
-      type: 'object',
-      properties: {
-        key: {
-          type: 'string',
-        },
-        value: {
-          type: 'string',
-        },
-      },
-    },
-  })
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreatePostMetaOptionsDto)
-  metaOptions?: CreatePostMetaOptionsDto[];
 }
