@@ -14,7 +14,6 @@ export class Tag extends Document {
   @Prop({
     type: String,
     required: true,
-    unique: true,
   })
   slug: string;
 }
