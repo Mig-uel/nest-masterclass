@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsEnum,
   IsISO8601,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -58,4 +59,8 @@ export class CreatePostDto {
   @IsISO8601()
   @IsOptional()
   publishOn?: Date;
+
+  @ApiProperty()
+  @IsMongoId()
+  author: string;
 }
