@@ -1,20 +1,34 @@
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigType } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import MongoConfig from './config/mongo.config';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
 
+const ENV = process.env.NODE_ENV;
+
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [MongoConfig],
+      envFilePath: !ENV ? '.env' : `.env.${ENV}`,
+    }),
     UsersModule,
     PostsModule,
     AuthModule,
-    MongooseModule.forRoot(
-      'mongodb+srv://nestjs:4kRbli2h2k5F50tb@nestjs.dgq4bvd.mongodb.net/?retryWrites=true&w=majority&appName=nestjs',
-      { dbName: 'nestjs-blog' },
-    ),
+    MongooseModule.forRootAsync({
+      inject: [MongoConfig.KEY],
+      useFactory(mongoConfig: ConfigType<typeof MongoConfig>) {
+        return {
+          uri: mongoConfig.mongoURI,
+          dbName: mongoConfig.mongoDBName,
+        };
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
