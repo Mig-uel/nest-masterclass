@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import { PostsService } from './providers/posts.service';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
+import { PostsService } from './providers/posts.service';
 
 @Controller('posts')
 @ApiTags('Posts')
@@ -17,9 +17,9 @@ export class PostsController {
   /*
    * GET localhost:3000/posts/:userId
    */
-  @Get('/:userId?')
-  public getPosts(@Param('userId') userId: string) {
-    return this.postsService.findAll(userId);
+  @Get('')
+  public getPosts() {
+    return this.postsService.findAll();
   }
 
   @ApiOperation({

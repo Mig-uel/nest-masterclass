@@ -10,17 +10,13 @@ export class PostsService {
     private readonly usersService: UsersService,
   ) {}
 
-  public findAll(userId: string) {
-    const user = this.usersService.findOneById(userId);
-
+  public findAll() {
     return [
       {
-        user: user,
         title: 'Test Tile',
         content: 'Test Content',
       },
       {
-        user: user,
         title: 'Test Tile 2',
         content: 'Test Content 2',
       },
