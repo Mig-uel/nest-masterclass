@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import MongoConfig from './config/mongo.config';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
+import { TagsModule } from './tags/tags.module';
+import { TagsService } from './providers/tags/tags.service';
 
 const ENV = process.env.NODE_ENV;
 
@@ -29,8 +31,9 @@ const ENV = process.env.NODE_ENV;
         };
       },
     }),
+    TagsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TagsService],
 })
 export class AppModule {}
