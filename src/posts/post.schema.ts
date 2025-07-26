@@ -63,9 +63,7 @@ export class Post extends Document {
   author: User;
 
   @Prop({
-    type: [
-      { type: mongoose.Schema.Types.ObjectId, ref: Tag.name, unique: true },
-    ],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: Tag.name }],
   })
   tags?: Tag[];
 }
