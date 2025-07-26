@@ -6,9 +6,9 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import MongoConfig from './config/mongo.config';
 import { PostsModule } from './posts/posts.module';
-import { UsersModule } from './users/users.module';
+import { TagsService } from './tags/providers/tags.service';
 import { TagsModule } from './tags/tags.module';
-import { TagsService } from './providers/tags/tags.service';
+import { UsersModule } from './users/users.module';
 
 const ENV = process.env.NODE_ENV;
 
