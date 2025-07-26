@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppService } from './app.service';
+import { AppController } from './app/app.controller';
 import { AuthModule } from './auth/auth.module';
 import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
 import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
@@ -35,6 +37,7 @@ const ENV = process.env.NODE_ENV;
       provide: APP_INTERCEPTOR,
       useClass: DataResponseInterceptor,
     },
+    AppService,
   ],
   imports: [
     ConfigModule.forRoot({
@@ -70,5 +73,6 @@ const ENV = process.env.NODE_ENV;
     UploadsModule,
     MailModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
