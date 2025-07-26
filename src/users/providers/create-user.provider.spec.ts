@@ -1,3 +1,4 @@
+import { ConflictException } from '@nestjs/common';
 import { Test, type TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { HashingProvider } from 'src/auth/providers/hashing.provider';
@@ -20,7 +21,7 @@ const createMockRepository = <
 describe('CreateUserProvider', () => {
   let provider: CreateUserProvider;
   let usersRepository: MockRepository<User>;
-  const user: Partial<User> = {
+  const user = {
     email: 'email@test.com',
     firstName: 'John',
     lastName: 'Test',
@@ -60,5 +61,42 @@ describe('CreateUserProvider', () => {
 
   it('should be defined', () => {
     expect(provider).toBeDefined();
+  });
+
+  describe('create', () => {
+    describe('When the user does not exist in database', () => {
+      it('should create a new user', async () => {
+        usersRepository.findOne?.mockReturnValue(null);
+        usersRepository.create?.mockReturnValue(user);
+        usersRepository.save?.mockReturnValue(user);
+
+        // eslint-disable-next-line
+        const newUser = await provider.create(user);
+
+        expect(usersRepository.findOne).toHaveBeenCalledWith({
+          where: {
+            email: user.email,
+          },
+        });
+
+        expect(usersRepository.create).toHaveBeenCalledWith(user);
+        expect(usersRepository.save).toHaveBeenCalledWith(user);
+      });
+    });
+
+    describe('When user exists', () => {
+      it('throw ConflictException', async () => {
+        try {
+          usersRepository.findOne?.mockReturnValue(user.email);
+          usersRepository.create?.mockReturnValue(user);
+          usersRepository.save?.mockReturnValue(user);
+
+          // eslint-disable-next-line
+          const newUser = await provider.create(user);
+        } catch (error) {
+          expect(error).toBeInstanceOf(ConflictException);
+        }
+      });
+    });
   });
 });
