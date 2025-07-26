@@ -17,16 +17,7 @@ export class PostsService {
   ) {}
 
   public findAll() {
-    return [
-      {
-        title: 'Test Tile',
-        content: 'Test Content',
-      },
-      {
-        title: 'Test Tile 2',
-        content: 'Test Content 2',
-      },
-    ];
+    return this.postModel.find().populate('author tags');
   }
 
   async create(createPostDto: CreatePostDto) {
