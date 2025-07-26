@@ -6,7 +6,6 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import MongoConfig from './config/mongo.config';
 import { PostsModule } from './posts/posts.module';
-import { TagsService } from './tags/providers/tags.service';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
 
@@ -34,6 +33,6 @@ const ENV = process.env.NODE_ENV;
     TagsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, TagsService],
+  providers: [AppService],
 })
 export class AppModule {}
