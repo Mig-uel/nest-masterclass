@@ -40,5 +40,5 @@ export class User {
   @OneToMany(() => Post, (post) => post.author, {
     onDelete: 'CASCADE',
   })
-  posts: Post[];
+  posts?: Post[];
 }
