@@ -1,7 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+// For Documenation refer url: https://docs.nestjs.com/openapi/types-and-parameters
+import { postStatus } from '../enums/post-status.enum';
 import {
-  ArrayNotEmpty,
+  IsArray,
   IsEnum,
   IsISO8601,
   IsJSON,
@@ -9,109 +9,100 @@ import {
   IsOptional,
   IsString,
   IsUrl,
-  IsUUID,
   Matches,
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { CreateMetaOptionsDto } from '../../meta-options/dtos/create-meta-options.dto';
-import { PostType, Status } from '../types/types';
+import { PostType } from '../enums/post-type.enum';
+import { Type } from 'class-transformer';
+import { CreatePostMetaOptionsDto } from './create-post-meta-options.dto';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreatePostDto {
-  @ApiProperty({
-    example: 'This is a title',
-    description: 'This is the title for the blog post',
-  })
-  @MinLength(3)
+  @ApiProperty()
   @IsString()
+  @MinLength(4)
+  @IsNotEmpty()
   title: string;
 
   @ApiProperty({
-    description: `Possible values: ${Object.values(PostType).join(', ')}`,
     enum: PostType,
+    description: "Possible values  'post', 'page', 'story', 'series'",
   })
   @IsEnum(PostType)
+  @IsNotEmpty()
   postType: PostType;
 
   @ApiProperty({
-    example: 'my-blog-post',
-  })
-  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
-    message:
-      'A slug should be all lowercase letters, substituting spaces for dashes',
+    description: "For example 'my-url'",
   })
   @IsString()
+  @IsNotEmpty()
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+    message:
+      'A slug should be all small letters and uses only "-" and without spaces. For example "my-url"',
+  })
   slug: string;
 
   @ApiProperty({
-    description: `Possible values: ${Object.values(Status).join(', ')}`,
-    enum: Status,
+    enum: postStatus,
+    description: "Possible values 'draft', 'scheduled', 'review', 'published'",
   })
-  @IsEnum(Status)
-  status: Status;
-
-  @ApiPropertyOptional({
-    description: 'This is the content of the post',
-    example: 'The content of the post',
-  })
+  @IsEnum(postStatus)
   @IsNotEmpty()
-  @IsString()
+  status: postStatus;
+
+  @ApiPropertyOptional()
   @IsOptional()
+  @IsString()
   content?: string;
 
   @ApiPropertyOptional({
     description:
-      'Serialize your JSON object otherwise a validation error will be thrown ',
-    example:
-      '{"author":"John Doe","views":123,"tags":["nestjs","typescript"],"published":true}',
+      'Serialize your JSON object else a validation error will be thrown',
   })
-  @IsJSON()
   @IsOptional()
+  @IsJSON()
   schema?: string;
 
-  @ApiPropertyOptional({
-    description: 'Featured image for your blog post',
-    example: 'http://localhost:3000/images/image1.jpg',
-  })
-  @IsUrl()
+  @ApiPropertyOptional()
   @IsOptional()
+  @IsUrl()
   featuredImageUrl?: string;
 
-  @ApiPropertyOptional({
-    description: 'The date on which the blog post is published',
-    example: '2024-06-13T15:30:00Z',
+  @ApiProperty({
+    description: 'Must be a valid timestamp in ISO8601',
+    example: '2024-03-16T07:46:32+0000',
   })
   @IsISO8601()
   @IsOptional()
   publishOn?: Date;
 
-  @ApiPropertyOptional({
-    description: 'Array of tag IDs passed as UUID string values',
-    example: [
-      '123e4567-e89b-12d3-a456-426614174000',
-      '223e4567-e89b-12d3-a456-426614174001',
-    ],
-  })
-  @IsUUID('all', { each: true })
-  @ArrayNotEmpty()
+  @ApiPropertyOptional()
+  @IsArray()
   @IsOptional()
+  @IsString({ each: true })
+  @MinLength(3, { each: true })
   tags?: string[];
 
   @ApiPropertyOptional({
+    type: 'array',
+    required: false,
     items: {
       type: 'object',
       properties: {
-        metaValue: {
-          type: 'json',
-          description: 'The metaValue is a JSON string',
-          example: '{"sideBarEnabled": true}',
+        key: {
+          type: 'string',
+        },
+        value: {
+          type: 'string',
         },
       },
     },
-    required: false,
   })
-  @ValidateNested({ each: true })
-  @Type(() => CreateMetaOptionsDto)
   @IsOptional()
-  metaOptions?: CreateMetaOptionsDto | undefined;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreatePostMetaOptionsDto)
+  metaOptions?: CreatePostMetaOptionsDto[];
 }

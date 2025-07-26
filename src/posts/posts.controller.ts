@@ -1,81 +1,50 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseUUIDPipe,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ActiveUser } from 'src/auth/decorators/active-user.decorator';
-import type { ActiveUserData } from 'src/auth/interfaces/active-user-data.interface';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { PostsService } from './providers/posts.service';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
-import { GetPostsDto } from './dtos/get-posts.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
-import { PostsService } from './posts.service';
 
 @Controller('posts')
+@ApiTags('Posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(
+    /*
+     *  Injecting Posts Service
+     */
+    private readonly postsService: PostsService,
+  ) {}
 
-  @ApiOperation({
-    summary: 'Fetches all posts',
-  })
-  @Get()
-  getPosts(@Query() postQuery: GetPostsDto) {
-    return this.postsService.findAll(postQuery);
+  /*
+   * GET localhost:3000/posts/:userId
+   */
+  @Get('/:userId?')
+  public getPosts(@Param('userId') userId: string) {
+    return this.postsService.findAll(userId);
   }
 
   @ApiOperation({
-    summary: 'Fetches all posts by a specific user',
-  })
-  @Get(':uid')
-  getPostsByUserId(@Param('uid') uid: string) {
-    return this.postsService.findAllPostsByUserId(uid);
-  }
-
-  @ApiOperation({
-    summary: 'Creates a new blog post',
+    summary: 'Creates a new post for the blog.',
   })
   @ApiResponse({
-    description: 'You get a 201 response if your post is created successfully',
     status: 201,
+    description:
+      'You get a success 201 response if the post is created successfully',
   })
   @Post()
-  createPost(
-    @Body() createPostDto: CreatePostDto,
-    @ActiveUser() user: ActiveUserData,
-  ) {
-    return this.postsService.create(createPostDto, user);
+  public createPost(@Body() createPostDto: CreatePostDto) {
+    console.log(createPostDto);
   }
 
   @ApiOperation({
-    summary: 'Updates a blog post',
+    summary: 'Updates and existing blog post in the database.',
   })
   @ApiResponse({
-    description: 'You get a 200 response if the post is updated successfully',
     status: 200,
+    description:
+      'You get a success 20o response if the post is updated successfully',
   })
-  @Patch(':id')
-  updatePost(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() patchPostDto: PatchPostDto,
-  ): any {
-    return this.postsService.update(id, patchPostDto);
-  }
-
-  @ApiOperation({
-    summary: 'Deletes a blog post',
-  })
-  @ApiResponse({
-    description: 'You get a 200 response if the post is deleted successfully',
-    status: 200,
-  })
-  @Delete(':pid')
-  deletePost(@Param('pid', ParseUUIDPipe) pid: string): any {
-    return this.postsService.delete(pid);
+  @Patch()
+  public updatePost(@Body() patchPostsDto: PatchPostDto) {
+    console.log(patchPostsDto);
   }
 }

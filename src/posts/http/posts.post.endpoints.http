@@ -1,18 +1,24 @@
-# POST /posts
-# Description: Create a new post.
+# {\r\n    \"@context\": \"https:\/\/schema.org\",\r\n    \"@type\": \"Person\"\r\n  }
 POST http://localhost:3000/posts
 Content-Type: application/json
+
 {
-  "title": "Wow, this is NestJS in action!",
-  "content": "This is a new post created using NestJS.",
-  "slug": "wow-this-is-nestjs-in-action",
+  "title": "What's new with NestJS",
   "postType": "post",
-  "status": "published",
-  "metaOptions": {
-    "metaValue": "{\"sidebarEnabled\": false, \"theme\": \"light\"}"
-  },
-  "authorId": "",
+  "slug": "new-with-nest-js",
+  "status": "draft",
+  "content": "post-content",
+  "schema": "{\r\n    \"@context\": \"https:\/\/schema.org\",\r\n    \"@type\": \"Person\"\r\n  }",
+  "featuredImageUrl": "http://localhost.com/images/image1.jpg",
+  "publishOn": "2024-03-16T07:46:32+0000",
   "tags": [
-    ""
+    "nestJS",
+    "typescript"
+  ],
+  "metaOptions": [
+    {
+      "key": "testKey",
+      "value": 20
+    }
   ]
 }

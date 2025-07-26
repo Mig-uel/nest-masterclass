@@ -1,61 +1,46 @@
-import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import { config } from 'aws-sdk';
-import { AppModule } from './app.module';
-
-import { type ConfigType } from '@nestjs/config';
+/*
+ * Swagger Specific Imports
+ */
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import AWSConfig from './config/aws.config';
+
+import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  /**
-   * Globally setup ValidationPipe
+  /*
+   * Use validation pipes globally
    */
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // strips unknown properties from request body
-      forbidNonWhitelisted: true, // throws an error if unknown properties are found
-      transform: true, // transforms an incoming request to an instance of the dto class after validation
-      transformOptions: {
-        enableImplicitConversion: true,
-      }, // enable implicit conversion
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
     }),
   );
 
-  /**
-   * Swagger config
+  /*
+   * Install Swagger
+   * npm i @nestjs/swagger@7.3.0
    */
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('NestJS Masterclass - Blog App API')
-    .setDescription('Use the base API URL of http://localhost:3000')
+
+  // Create the swagger configuration
+  const config = new DocumentBuilder()
+    .setTitle('NestJS Masterclass - Blog app API')
+    .setDescription('Use the base API URL as http://localhost:3000')
     .setTermsOfService('http://localhost:3000/terms-of-service')
-    .setLicense('MIT License', 'https://opensource.org/licenses/MIT')
-    .addServer('http://localhost:3000')
+    .setLicense(
+      'MIT License',
+      'https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt',
+    )
+    .addServer('http://localhost:3000/')
     .setVersion('1.0')
     .build();
+  // Instantiate Swagger
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
-  // Instantiate Swagger document
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-
-  // Use document to complete setup
-  SwaggerModule.setup('docs', app, document);
-
-  // Setup the AWS sdk for uploading files to S3 bucket
-  const awsConfigService = app.get<ConfigType<typeof AWSConfig>>(AWSConfig.KEY);
-
-  config.update({
-    credentials: {
-      accessKeyId: awsConfigService.awsAccessKey!,
-      secretAccessKey: awsConfigService.awsSecretAccessKey!,
-    },
-    region: awsConfigService.awsRegion!,
-  });
-
-  // Enable cors
-  app.enableCors();
-
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(3000);
 }
-bootstrap().catch((error) => console.error(error));
+bootstrap();

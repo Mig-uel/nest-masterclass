@@ -1,9 +1,0 @@
-# DELETE /tags/:id
-# Description: Delete a tag by ID
-# Response: 204 No Content
-DELETE http://localhost:3000/tags/123e4567-e89b-12d3-a456-426614174000
-
-# SOFT DELETE /tags/soft-delete/:id
-# Description: Soft delete a tag by ID
-# Response: 204 No Content
-DELETE http://localhost:3000/tags/soft-delete/cd73edd5-9212-422d-9f0d-cd48f6135ce4

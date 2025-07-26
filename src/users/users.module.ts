@@ -1,33 +1,22 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module, forwardRef } from '@nestjs/common';
+import { User, UserSchema } from './user.schema';
+
 import { AuthModule } from 'src/auth/auth.module';
-import { PaginationModule } from 'src/common/pagination/pagination.module';
-import ProfileConfig from './config/profile.config';
-import { User } from './entities/user.entity';
-import { CreateGoogleUserProvider } from './providers/create-google-user.provider';
-import { CreateUserProvider } from './providers/create-user.provider';
-import { FindOneByGoogleIdProvider } from './providers/find-one-by-google-id.provider';
-import { FindOneUserByEmailProvider } from './providers/find-one-user-by-email';
-import { UsersCreateMany } from './providers/users-create-many';
+import { MongooseModule } from '@nestjs/mongoose';
 import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
+import { UsersService } from './providers/users.service';
 
 @Module({
   controllers: [UsersController],
-  providers: [
-    UsersService,
-    UsersCreateMany,
-    CreateUserProvider,
-    FindOneUserByEmailProvider,
-    FindOneByGoogleIdProvider,
-    CreateGoogleUserProvider,
-  ],
+  providers: [UsersService],
   exports: [UsersService],
   imports: [
-    TypeOrmModule.forFeature([User]),
-    ConfigModule.forFeature(ProfileConfig),
-    PaginationModule,
+    MongooseModule.forFeature([
+      {
+        name: User.name,
+        schema: UserSchema,
+      },
+    ]),
     forwardRef(() => AuthModule),
   ],
 })

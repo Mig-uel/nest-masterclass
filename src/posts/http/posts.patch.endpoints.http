@@ -1,8 +1,9 @@
-# PATCH /posts/:id
-# Description: Update an existing post.
-PATCH http://localhost:3000/posts/7912a701-fd2f-4acb-8247-cc0ac28453e8
+PATCH http://localhost:3000/posts
 Content-Type: application/json
-{
 
+{
+  "id": 1234,
+  "title": "What's new with NestJS",
+  "postType": "post",
+  "content": "post-content"
 }
-  

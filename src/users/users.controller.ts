@@ -1,96 +1,65 @@
 import {
-  Body,
-  ClassSerializerInterceptor,
   Controller,
   Get,
-  Headers,
-  Ip,
   Param,
   Patch,
   Post,
   Query,
-  UseInterceptors,
+  Body,
+  ParseIntPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { Auth } from 'src/auth/decorators/auth.decorator';
-import { AuthType } from 'src/auth/enums/auth-type.enum';
-import { PaginationQueryDto } from 'src/common/pagination/dtos/pagination-query.dto';
-import type { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
-import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
-import type { User } from './entities/user.entity';
-import { UsersService } from './users.service';
+import { UsersService } from './providers/users.service';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
+@ApiTags('Users')
 export class UsersController {
-  // Inject Users Service
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    // Injecting Users Service
+    private readonly usersService: UsersService,
+  ) {}
 
-  @Get(':id')
+  @Get('/:id?')
   @ApiOperation({
-    summary: 'Fetches a registered user on the application',
+    summary: 'Fetches a list of registered users on the application.',
   })
-  @ApiResponse({
-    status: 200,
-    description: 'User fetched successfully based on the param',
-  })
-  getUser(@Param() getUserParamDto: GetUsersParamDto): Promise<User> {
-    const { id } = getUserParamDto;
-
-    return this.usersService.findOneById(id);
-  }
-
-  @Get()
   @ApiQuery({
     name: 'limit',
-    type: 'number',
+    type: String,
+    description: 'The upper limit of pages you want the pagination to return',
     required: false,
-    description: 'The number of entries returned per query',
-    example: 10,
   })
   @ApiQuery({
     name: 'page',
-    type: 'number',
+    type: String,
+    description:
+      'The position of the page number that you want the API to return',
     required: false,
-    description: 'The page number that you want the API to return',
-    example: 1,
   })
-  getAllUsers(
-    @Query() paginationQuery: PaginationQueryDto,
-  ): Promise<Paginated<User>> {
-    return this.usersService.findAll(paginationQuery);
-  }
-
-  /**
-   * Route to create user
-   * @param createUserDto
-   * @param _
-   * @param ip
-   * @returns
-   */
-  @Post()
-  // @SetMetadata('authType', 'none') // Set custom metadata
-  @Auth(AuthType.None) // Set AuthType metadata to none
-  @UseInterceptors(ClassSerializerInterceptor)
-  createUser(
-    @Body() createUserDto: CreateUserDto,
-    @Headers() _: any, // Get headers from request
-    @Ip() ip: string, // Get IP address of the request
+  @ApiResponse({
+    status: 200,
+    description: 'Users fetched successfully based on the query',
+  })
+  public getUsers(
+    @Param() getUserParamDto: GetUsersParamDto,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
-    console.log(ip);
-
-    return this.usersService.create(createUserDto);
+    return this.usersService.findAll(getUserParamDto, limit, page);
   }
 
-  @Post('create-many')
-  createManyUsers(@Body() createUsersDto: CreateManyUsersDto) {
-    return this.usersService.createMany(createUsersDto);
+  @Post()
+  public createUsers(@Body() createUserDto: CreateUserDto) {
+    console.log(createUserDto instanceof CreateUserDto);
+    return 'You sent a post request to users endpoint';
   }
 
   @Patch()
-  patchUser(@Body() patchUserDto: PatchUserDto) {
+  public patchUser(@Body() patchUserDto: PatchUserDto) {
     return patchUserDto;
   }
 }

@@ -1,4 +1,0 @@
-# DELETE /posts/:id
-# Description: Delete a post by ID
-# Response: 204 No Content
-DELETE http://localhost:3000/posts/300bf538-5361-4ff3-9458-47ae21952c04
