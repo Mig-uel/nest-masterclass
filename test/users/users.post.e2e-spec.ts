@@ -55,9 +55,37 @@ describe('[Users] @Post Endpoints', () => {
   });
 
   it('/users - Valid request successfully creates user', () => {
-    return request(httpServer).post('/users').send(completeUser).expect(201);
+    return request(httpServer)
+      .post('/users')
+      .send(completeUser)
+      .expect(201)
+      .then(({ body }: { body: { data: typeof completeUser } }) => {
+        expect(body.data).toBeDefined();
+        expect(body.data.firstName).toBe(completeUser.firstName);
+        expect(body.data.lastName).toBe(completeUser.lastName);
+        expect(body.data.email).toBe(completeUser.email);
+      });
   });
 
-  it.todo('/users - password is not returned in response');
-  it.todo('/users - googleId is not returned in response');
+  it('/users - password is not returned in response', () => {
+    return request(httpServer)
+      .post('/users')
+      .send(completeUser)
+      .expect(201)
+      .then(({ body }) => {
+        // eslint-disable-next-line
+        expect(body.data.password).toBeUndefined();
+      });
+  });
+
+  it('/users - googleId is not returned in response', () => {
+    return request(httpServer)
+      .post('/users')
+      .send(completeUser)
+      .expect(201)
+      .then(({ body }) => {
+        // eslint-disable-next-line
+        expect(body.data.googleId).toBeUndefined();
+      });
+  });
 });
