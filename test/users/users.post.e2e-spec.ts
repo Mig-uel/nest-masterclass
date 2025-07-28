@@ -1,6 +1,6 @@
 import { type INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import supertest from 'supertest';
+import * as request from 'supertest';
 import { App } from 'supertest/types';
 import { bootstrapNestApp } from 'test/helpers/bootstrap-nest-app.helper';
 import { dropDB } from 'test/helpers/drop-db.helper';
@@ -28,9 +28,10 @@ describe('[Users] @Post Endpoints', () => {
   });
 
   it('/users - Endpoint is public', () => {
-    return supertest(httpServer)
+    return request(httpServer)
       .post('/users')
       .send({})
+      .expect(400)
       .then((data) => {
         console.log(data);
       });
