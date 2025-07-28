@@ -1,21 +1,31 @@
 import { type INestApplication } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { appCreate } from 'src/app.create';
 import { App } from 'supertest/types';
+import { dropDB } from 'test/helpers/drop-db.helper';
 import { AppModule } from '../../src/app.module';
 
 describe('[Users] @Post Endpoints', () => {
   let app: INestApplication<App>;
+  let config: ConfigService;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, ConfigModule],
+      providers: [ConfigService],
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    appCreate(app);
+
+    config = app.get<ConfigService>(ConfigService);
+
     await app.init();
   });
 
   afterEach(async () => {
+    await dropDB(config);
     await app.close();
   });
 
